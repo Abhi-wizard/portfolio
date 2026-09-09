@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { useMouseParallax } from '../../hooks/useMouseParallax';
+import { assetUrl } from '../../utils/assetUrl';
 import './HogwartsEntrance.css';
 
 const HogwartsEntrance = () => {
@@ -43,7 +44,7 @@ const HogwartsEntrance = () => {
           }}
         >
           <img
-            src="/assets/images/hogwarts.jpg"
+            src={assetUrl('/assets/images/hogwarts.jpg')}
             alt="Hogwarts Castle Entrance"
             className={`hogwarts-bg-image ${isZooming ? 'camera-zoom-in' : ''}`}
           />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaTimes, FaExpand } from 'react-icons/fa';
+import { assetUrl } from '../utils/assetUrl';
 
 const ProjectCard = ({ project }) => {
   const [discoveredImages, setDiscoveredImages] = useState([]);
@@ -11,10 +12,11 @@ const ProjectCard = ({ project }) => {
   
   useEffect(() => {
     if (project.images && project.images.length > 0) {
-      setDiscoveredImages(project.images);
+      setDiscoveredImages(project.images.map((img) => assetUrl(img)));
       setIsLoading(false);
       return;
     }
+
 
     let active = true;
     const found = [];

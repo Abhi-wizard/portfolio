@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 let dracoLoaderInstance = null;
 const getDracoLoader = () => {
@@ -86,7 +87,7 @@ export const createWandCursor3D = (scene, camera, onActivate) => {
   if (draco) loader.setDRACOLoader(draco);
 
   loader.load(
-    '/assets/models/elder_wand.glb',
+    assetUrl('/assets/models/elder_wand.glb'),
     (gltf) => {
       rawWandModel = gltf.scene;
       rawWandModel.renderOrder = 99999;

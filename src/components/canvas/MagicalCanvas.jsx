@@ -5,6 +5,7 @@ import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { useMouseParallax } from '../../hooks/useMouseParallax';
 import { createParticleField } from './ParticleField';
 import { loadGLBModel } from './GLBModel';
+import { assetUrl } from '../../utils/assetUrl';
 import './MagicalCanvas.css';
 
 /**
@@ -138,7 +139,7 @@ const MagicalCanvas = () => {
 
     // 7. REAL 3D MODEL: Hogwarts Grand Hall (hogwarts_grand_hall.glb)
     const grandHallModel = loadGLBModel({
-      modelPath: '/assets/models/hogwarts_grand_hall.glb',
+      modelPath: assetUrl('/assets/models/hogwarts_grand_hall.glb'),
       scene,
       position: [0, -1.2, 0],
       rotation: [0, 0, 0],

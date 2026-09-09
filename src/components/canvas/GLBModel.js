@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 // Cache loaded GLTF objects to avoid duplicate network fetches
 const modelCache = new Map();
@@ -52,6 +53,7 @@ export const loadGLBModel = ({
   onLoad,
   onError
 }) => {
+  const resolvedPath = assetUrl(modelPath);
   const container = new THREE.Group();
   scene.add(container);
 
@@ -139,14 +141,14 @@ export const loadGLBModel = ({
   };
 
   // Check cache or load fresh
-  if (modelCache.has(modelPath)) {
-    setupModel(modelCache.get(modelPath));
+  if (modelCache.has(resolvedPath)) {
+    setupModel(modelCache.get(resolvedPath));
     if (onProgress) onProgress(100);
   } else {
     loader.load(
-      modelPath,
+      resolvedPath,
       (gltf) => {
-        modelCache.set(modelPath, gltf);
+        modelCache.set(resolvedPath, gltf);
         setupModel(gltf);
         if (onProgress) onProgress(100);
       },
@@ -157,11 +159,12 @@ export const loadGLBModel = ({
         }
       },
       (error) => {
-        console.error(`[GLBModel] Failed to load real 3D model from ${modelPath}:`, error);
+        console.error(`[GLBModel] Failed to load real 3D model from ${resolvedPath}:`, error);
         if (onError) onError(error);
       }
     );
   }
+
 
   // Per-frame update hook
   const update = (delta = 0.016, mouse = { x: 0, y: 0 }, _scroll = 0) => {

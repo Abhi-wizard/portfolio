@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { createCourtyardFountain } from './CourtyardWater';
+import { assetUrl } from '../../utils/assetUrl';
 
 /**
  * Creates the complete 3D Courtyard environment, central fountain, character avatar,
@@ -121,7 +122,7 @@ export const createCourtyardEnvironment = (scene, onWandActivate) => {
   // Load Elder Wand GLB
   const loader = new GLTFLoader();
   loader.load(
-    '/assets/models/elder_wand.glb',
+    assetUrl('/assets/models/elder_wand.glb'),
     (gltf) => {
       const wand = gltf.scene;
       wand.scale.set(0.008, 0.008, 0.008);

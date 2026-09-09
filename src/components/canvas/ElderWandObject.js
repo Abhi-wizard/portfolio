@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 let dracoLoaderInstance = null;
 const getDracoLoader = () => {
@@ -10,6 +11,7 @@ const getDracoLoader = () => {
   }
   return dracoLoaderInstance;
 };
+
 
 /**
  * Creates and manages the REAL 3D Elder Wand asset inside Three.js
@@ -101,7 +103,7 @@ export const createElderWandObject = (scene, onActivate) => {
   if (draco) loader.setDRACOLoader(draco);
 
   loader.load(
-    '/assets/models/elder_wand.glb',
+    assetUrl('/assets/models/elder_wand.glb'),
     (gltf) => {
       rawWandModel = gltf.scene;
 

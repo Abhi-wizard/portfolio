@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 const ModelViewer = ({
   modelPath,
@@ -17,6 +18,7 @@ const ModelViewer = ({
     const mount = mountRef.current;
     if (!mount || !modelPath) return;
 
+    const resolvedPath = assetUrl(modelPath);
     const width = mount.clientWidth || 300;
     const heightPx = mount.clientHeight || 300;
 
@@ -46,8 +48,9 @@ const ModelViewer = ({
     const loader = new GLTFLoader();
 
     loader.load(
-      modelPath,
+      resolvedPath,
       (gltf) => {
+
         model = gltf.scene;
 
         // Auto center bounding box

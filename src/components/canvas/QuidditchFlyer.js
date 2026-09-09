@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 let dracoLoaderInstance = null;
 const getDracoLoader = () => {
@@ -80,7 +81,7 @@ export const createQuidditchFlyer = (scene, onClickCallback) => {
   if (draco) loader.setDRACOLoader(draco);
 
   loader.load(
-    '/assets/models/harry_potter_quidditch_world_cup.glb',
+    assetUrl('/assets/models/harry_potter_quidditch_world_cup.glb'),
     (gltf) => {
       rawModel = gltf.scene;
 

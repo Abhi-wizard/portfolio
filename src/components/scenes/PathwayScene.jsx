@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { personalInfo } from '../../data/portfolioData';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { useMouseParallax } from '../../hooks/useMouseParallax';
+import { assetUrl } from '../../utils/assetUrl';
 import './PathwayScene.css';
 
 const PathwayScene = () => {
@@ -35,7 +36,7 @@ const PathwayScene = () => {
           }}
         >
           <img
-            src="/assets/images/pathway.webp"
+            src={assetUrl('/assets/images/pathway.webp')}
             alt="The Enchanted Pathway"
             className="pathway-bg-image"
           />

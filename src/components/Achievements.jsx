@@ -1,9 +1,10 @@
 import React from 'react';
+import { assetUrl } from '../utils/assetUrl';
 import './Achievements.css';
 
 const Achievements = () => {
   const openLink = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(assetUrl(url), '_blank', 'noopener,noreferrer');
   };
 
   return (

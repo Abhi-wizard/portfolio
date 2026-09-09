@@ -1,65 +1,50 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaDownload, FaScroll } from 'react-icons/fa';
 import * as pdfjsLib from 'pdfjs-dist';
+import { FaTimes, FaDownload, FaScroll } from 'react-icons/fa';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
+import { assetUrl } from '../../utils/assetUrl';
 import './ResumeOverlay.css';
 
-// Set up PDF.js worker
-try {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || '4.10.38'}/pdf.worker.min.mjs`;
-} catch (e) {
-  console.warn('PDF.js worker initialization:', e);
-}
+// Configure PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || '3.11.174'}/pdf.worker.min.js`;
 
 const ResumeOverlay = () => {
   const { isResumeOpen, closeResumeModal } = useMagicalScene();
-  const [animStage, setAnimStage] = useState('idle'); // 'idle' | 'envelope' | 'breaking' | 'opening' | 'emerging' | 'viewer' | 'closing'
   const [pdfPages, setPdfPages] = useState([]);
-  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(true);
   const [pdfError, setPdfError] = useState(false);
+  const [animStage, setAnimStage] = useState('idle'); // 'idle' | 'opening' | 'open' | 'closing'
   const canvasRefs = useRef([]);
 
-  // Lock background scroll when open
+  const resumePdfPath = assetUrl('/resume.pdf');
+
+  // Trigger stage transitions on modal open/close
   useEffect(() => {
     if (isResumeOpen) {
-      document.body.style.overflow = 'hidden';
-      startOpenSequence();
+      setAnimStage('opening');
+      loadPdfDocument();
+
+      const timer = setTimeout(() => {
+        setAnimStage('open');
+      }, 700);
+
+      return () => clearTimeout(timer);
     } else {
-      document.body.style.overflow = 'unset';
       setAnimStage('idle');
     }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isResumeOpen]);
 
-  // Envelope Opening Choreography
-  const startOpenSequence = () => {
-    setAnimStage('envelope');
-
-    // 1. Envelope floats in, then seal glows
-    setTimeout(() => {
-      setAnimStage('breaking');
-    }, 700);
-
-    // 2. Seal breaks and flap folds open
-    setTimeout(() => {
-      setAnimStage('opening');
-    }, 1400);
-
-    // 3. Document parchment emerges from inside
-    setTimeout(() => {
-      setAnimStage('emerging');
-    }, 2000);
-
-    // 4. Document expands into full readable viewer
-    setTimeout(() => {
-      setAnimStage('viewer');
-      loadPdfDocument();
-    }, 2700);
-  };
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isResumeOpen) {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isResumeOpen]);
 
   const handleClose = () => {
     setAnimStage('closing');
@@ -69,13 +54,12 @@ const ResumeOverlay = () => {
     }, 600);
   };
 
-  // Load and render PDF pages via PDF.js onto canvases
   const loadPdfDocument = async () => {
     setPdfLoading(true);
     setPdfError(false);
 
     try {
-      const loadingTask = pdfjsLib.getDocument('/resume.pdf');
+      const loadingTask = pdfjsLib.getDocument(resumePdfPath);
       const pdf = await loadingTask.promise;
       const numPages = pdf.numPages;
       const pagesArray = [];
@@ -98,25 +82,25 @@ const ResumeOverlay = () => {
           const dpr = window.devicePixelRatio || 1;
           const containerWidth = Math.min(window.innerWidth * 0.88, 880);
           const unscaledViewport = page.getViewport({ scale: 1 });
-          const scale = (containerWidth / unscaledViewport.width) * 1.5;
+          const scale = containerWidth / unscaledViewport.width;
           const viewport = page.getViewport({ scale });
 
           canvas.width = viewport.width * dpr;
           canvas.height = viewport.height * dpr;
-          canvas.style.width = `${viewport.width / (dpr * 1.5)}px`;
-          canvas.style.height = `${viewport.height / (dpr * 1.5)}px`;
+          canvas.style.width = `${viewport.width}px`;
+          canvas.style.height = `${viewport.height}px`;
+
+          context.scale(dpr, dpr);
 
           const renderContext = {
             canvasContext: context,
-            viewport: viewport,
-            transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
+            viewport: viewport
           };
-
           page.render(renderContext);
         });
       }, 100);
     } catch (err) {
-      console.warn('PDF.js rendering fallback triggered:', err);
+      console.warn('[ResumeOverlay] PDF.js rendering error, falling back to direct embed:', err);
       setPdfError(true);
       setPdfLoading(false);
     }
@@ -129,89 +113,56 @@ const ResumeOverlay = () => {
   return (
     <AnimatePresence>
       <div className="resume-overlay-backdrop" onClick={handleClose}>
-        {/* Ambient Darkened Glass Overlay with floating sparks */}
+        {/* Ambient Dark Magic Glow */}
         <div className="resume-overlay-vignette" />
         <div className="resume-floating-particles">
-          {Array.from({ length: 16 }).map((_, i) => (
-            <span
+          {Array.from({ length: 18 }).map((_, i) => (
+            <div
               key={i}
               className="resume-spark"
               style={{
-                left: `${(i * 6.2 + 8) % 92}%`,
-                top: `${(i * 7.8 + 10) % 85}%`,
-                animationDelay: `${(i * 0.3) % 2.5}s`
+                left: `${(i * 17) % 100}%`,
+                top: `${(i * 23) % 100}%`,
+                animationDelay: `${(i * 0.3) % 3}s`
               }}
             />
           ))}
         </div>
 
-        {/* 1. ENVELOPE STAGE ANIMATION */}
-        {animStage !== 'viewer' && animStage !== 'closing' && (
-          <div
-            className={`magical-envelope-wrapper ${animStage}`}
+        {/* 1. HOGWARTS ACCEPTANCE LETTER OPENING ANIMATION (Step 1) */}
+        {animStage === 'opening' && (
+          <motion.div
+            initial={{ scale: 0.2, rotateY: -180, opacity: 0 }}
+            animate={{ scale: 1, rotateY: 0, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.65, ease: 'easeOut' }}
+            className="hogwarts-envelope-wrapper"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* The Envelope Body */}
+            <div className="envelope-gold-crest">
+              <div className="wax-seal">
+                <span className="seal-letter">H</span>
+              </div>
+            </div>
             <div className="envelope-body">
-              {/* Back Flap Pocket */}
-              <div className="envelope-back" />
-
-              {/* Emerging Parchment Scroll */}
-              <div
-                className={`envelope-letter ${
-                  animStage === 'emerging' || animStage === 'opening' ? 'emerging' : ''
-                }`}
-              >
-                <div className="letter-inner">
-                  <div className="letter-header-rune">✦ T. ABHIMANYU ✦</div>
-                  <div className="letter-line" />
-                  <div className="letter-line short" />
-                  <div className="letter-line" />
-                </div>
-              </div>
-
-              {/* Left & Right Folds */}
-              <div className="envelope-left-fold" />
-              <div className="envelope-right-fold" />
-              <div className="envelope-bottom-fold" />
-
-              {/* Top Triangle Flap */}
-              <div
-                className={`envelope-top-flap ${
-                  animStage === 'opening' || animStage === 'emerging' ? 'opened' : ''
-                }`}
-              />
-
-              {/* Hogwarts Wax Seal */}
-              <div
-                className={`envelope-wax-seal ${
-                  animStage === 'breaking' || animStage === 'opening' || animStage === 'emerging'
-                    ? 'broken'
-                    : ''
-                }`}
-              >
-                <div className="seal-glow-ring" />
-                <div className="seal-monogram">⚡</div>
-              </div>
+              <p className="envelope-to">TO: THE ESTEEMED RECRUITER</p>
+              <p className="envelope-address">4 Privet Drive / Ministry of Innovation</p>
+              <div className="envelope-lumos-flash" />
             </div>
-
-            <div className="envelope-summon-caption">
-              ✦ SUMMONING THE ARCHIVE SCROLL... ✦
-            </div>
-          </div>
+          </motion.div>
         )}
 
         {/* 2. FULL-SCREEN SCROLLABLE RESUME VIEWER STAGE */}
-        {(animStage === 'viewer' || animStage === 'closing') && (
+        {(animStage === 'open' || animStage === 'closing') && (
           <motion.div
+            initial={{ scale: 0.88, opacity: 0, y: 30 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="resume-viewer-container"
-            initial={{ opacity: 0, scale: 0.85, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 20 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Parchment Header Bar */}
+            {/* Parchment Header / Ornate Runes */}
             <div className="resume-viewer-header">
               <div className="viewer-title-box">
                 <FaScroll className="viewer-scroll-icon" />
@@ -220,7 +171,7 @@ const ResumeOverlay = () => {
 
               <div className="viewer-actions-box">
                 <a
-                  href="/resume.pdf"
+                  href={resumePdfPath}
                   download="Abhimanyu_Resume.pdf"
                   className="viewer-action-btn download"
                   title="Download Resume PDF"
@@ -240,7 +191,7 @@ const ResumeOverlay = () => {
               </div>
             </div>
 
-            {/* Scrollable Document Area (Only this container scrolls!) */}
+            {/* Scrollable Document Area */}
             <div className="resume-scroll-container">
               {pdfLoading && (
                 <div className="pdf-loading-state">
@@ -249,7 +200,6 @@ const ResumeOverlay = () => {
                 </div>
               )}
 
-              {/* Render Canvas Pages if PDF.js loaded pages */}
               {!pdfLoading && !pdfError && pdfPages.length > 0 && (
                 <div className="pdf-pages-list">
                   {pdfPages.map((_, index) => (
@@ -268,13 +218,13 @@ const ResumeOverlay = () => {
               {(!pdfLoading && (pdfError || pdfPages.length === 0)) && (
                 <div className="pdf-embed-fallback">
                   <object
-                    data="/resume.pdf#toolbar=0&navpanes=0&scrollbar=1"
+                    data={`${resumePdfPath}#toolbar=0&navpanes=0&scrollbar=1`}
                     type="application/pdf"
                     className="pdf-object-frame"
                   >
                     <div className="pdf-no-support">
                       <p>Your magical vessel does not support inline PDF viewing.</p>
-                      <a href="/resume.pdf" download="Abhimanyu_Resume.pdf" className="viewer-action-btn download">
+                      <a href={resumePdfPath} download="Abhimanyu_Resume.pdf" className="viewer-action-btn download">
                         <FaDownload /> Download Direct PDF
                       </a>
                     </div>

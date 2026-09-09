@@ -1,24 +1,27 @@
 import { useState, useEffect } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { assetUrl } from '../utils/assetUrl';
 
 // In-memory model cache to avoid re-fetching heavy GLBs
 const modelCache = new Map();
 
 export const useModelLoader = (url) => {
-  const [gltf, setGltf] = useState(() => modelCache.get(url) || null);
-  const [loading, setLoading] = useState(!modelCache.has(url));
-  const [progress, setProgress] = useState(modelCache.has(url) ? 100 : 0);
+  const resolvedUrl = url ? assetUrl(url) : null;
+  const [gltf, setGltf] = useState(() => (resolvedUrl ? modelCache.get(resolvedUrl) || null : null));
+  const [loading, setLoading] = useState(resolvedUrl ? !modelCache.has(resolvedUrl) : false);
+  const [progress, setProgress] = useState(resolvedUrl && modelCache.has(resolvedUrl) ? 100 : 0);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!url) return;
+    if (!resolvedUrl) return;
 
-    if (modelCache.has(url)) {
-      setGltf(modelCache.get(url));
+    if (modelCache.has(resolvedUrl)) {
+      setGltf(modelCache.get(resolvedUrl));
       setLoading(false);
       setProgress(100);
       return;
     }
+
 
     let isMounted = true;
     setLoading(true);
@@ -27,10 +30,10 @@ export const useModelLoader = (url) => {
     const loader = new GLTFLoader();
 
     loader.load(
-      url,
+      resolvedUrl,
       (loadedGltf) => {
         if (!isMounted) return;
-        modelCache.set(url, loadedGltf);
+        modelCache.set(resolvedUrl, loadedGltf);
         setGltf(loadedGltf);
         setLoading(false);
         setProgress(100);
@@ -44,7 +47,7 @@ export const useModelLoader = (url) => {
       },
       (err) => {
         if (!isMounted) return;
-        console.warn(`Failed to load 3D model from ${url}:`, err);
+        console.warn(`Failed to load 3D model from ${resolvedUrl}:`, err);
         setError(err);
         setLoading(false);
       }
@@ -53,7 +56,7 @@ export const useModelLoader = (url) => {
     return () => {
       isMounted = false;
     };
-  }, [url]);
+  }, [resolvedUrl]);
 
   return { gltf, loading, progress, error };
 };

@@ -24,6 +24,7 @@ import {
 } from '../../data/portfolioData';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { useMouseParallax } from '../../hooks/useMouseParallax';
+import { assetUrl } from '../../utils/assetUrl';
 import './InnerArchiveScene.css';
 
 const StelaProjectCard = ({ project, idx, onOpenLightbox }) => {
@@ -149,7 +150,7 @@ const InnerArchiveScene = () => {
           }}
         >
           <img
-            src="/assets/images/pathway2.webp"
+            src={assetUrl('/assets/images/pathway2.webp')}
             alt="The Inner Sanctuary Pathway"
             className="innerarchive-bg-image"
           />

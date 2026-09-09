@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../../utils/assetUrl';
 
 let dracoLoaderInstance = null;
 const getDracoLoader = () => {
@@ -69,7 +70,7 @@ export const createGoldenSnitchFlyer = (scene) => {
   if (draco) loader.setDRACOLoader(draco);
 
   loader.load(
-    '/assets/models/harry_potter_-golden_snitch.glb',
+    assetUrl('/assets/models/harry_potter_-golden_snitch.glb'),
     (gltf) => {
       rawModel = gltf.scene;
       rawModel.renderOrder = 9999;
