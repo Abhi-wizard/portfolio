@@ -190,11 +190,11 @@ const Achievements = () => {
               </li>
               <li 
                 onClick={() => openLink({
-                  url: "/Achivements/poster making/POSTER MAKING CERTIFICATE1.jpg",
+                  url: assetUrl("/Achivements/poster making/POSTER MAKING CERTIFICATE1.jpg"),
                   images: [
-                    "/Achivements/poster making/POSTER MAKING CERTIFICATE1.jpg",
-                    "/Achivements/poster making/poster making certificate1.jpeg",
-                    "/Achivements/poster making/poster making3.jpeg"
+                    assetUrl("/Achivements/poster making/POSTER MAKING CERTIFICATE1.jpg"),
+                    assetUrl("/Achivements/poster making/poster making certificate1.jpeg"),
+                    assetUrl("/Achivements/poster making/poster making3.jpeg")
                   ],
                   title: "COLLEGE LEVEL POSTER DESIGN COMPETITIONS — MERIT CERTIFICATES",
                   recipient: "TO: THE DESIGN JURY & ACADEMIC EVALUATION COMMITTEE",

@@ -17,18 +17,19 @@ export const assetUrl = (path) => {
     return path;
   }
 
-  const rawBase = import.meta.env.BASE_URL || '/';
-  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
-  const baseNoSlashes = base.replace(/^\/+|\/+$/g, '');
+  const base = import.meta.env.BASE_URL || '/';
 
-  let cleanPath = path.replace(/^\/+/, '');
-
-  if (baseNoSlashes && cleanPath.startsWith(`${baseNoSlashes}/`)) {
-    cleanPath = cleanPath.slice(baseNoSlashes.length + 1);
-  } else if (baseNoSlashes && cleanPath === baseNoSlashes) {
-    cleanPath = '';
+  // If already prefixed with base URL, return as-is
+  if (base !== '/' && (path === base || path.startsWith(base))) {
+    return path;
   }
 
+  const cleanBase = base.replace(/^\/+/, '');
+  if (base !== '/' && cleanBase && path.startsWith(cleanBase)) {
+    return `/${path}`;
+  }
+
+  const cleanPath = path.replace(/^\/+/, '');
   return `${base}${cleanPath}`;
 };
 

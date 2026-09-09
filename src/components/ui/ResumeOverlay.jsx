@@ -132,7 +132,7 @@ const ResumeOverlay = () => {
     renderTasksRef.current = [];
 
     try {
-      const loadingTask = pdfjsLib.getDocument(url);
+      const loadingTask = pdfjsLib.getDocument(encodeURI(url));
       const pdf = await loadingTask.promise;
       const numPages = pdf.numPages;
       const pagesArray = [];
