@@ -138,8 +138,11 @@ const MagicalCanvas = () => {
     const particleSystem = createParticleField(scene, particleCount);
 
     // 7. REAL 3D MODEL: Hogwarts Grand Hall (hogwarts_grand_hall.glb)
+    const grandHallPath = assetUrl('/assets/models/hogwarts_grand_hall.glb');
+    console.log('[MagicalCanvas] Loading Hogwarts Grand Hall from:', grandHallPath);
+
     const grandHallModel = loadGLBModel({
-      modelPath: assetUrl('/assets/models/hogwarts_grand_hall.glb'),
+      modelPath: grandHallPath,
       scene,
       position: [0, -1.2, 0],
       rotation: [0, 0, 0],
@@ -154,6 +157,7 @@ const MagicalCanvas = () => {
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
+        console.log('[MagicalCanvas] Hogwarts Grand Hall loaded successfully. Dimensions:', size, 'maxDim:', maxDim);
 
         if (maxDim > 0) {
           const targetScale = 14.0 / maxDim;
@@ -178,7 +182,7 @@ const MagicalCanvas = () => {
         setLoadingProgress(100);
       },
       onError: (err) => {
-        console.error('Error loading Hogwarts Grand Hall GLB:', err);
+        console.error('[MagicalCanvas] Error loading Hogwarts Grand Hall GLB:', err?.message || err, err);
         setLoadingProgress(100);
       }
     });
