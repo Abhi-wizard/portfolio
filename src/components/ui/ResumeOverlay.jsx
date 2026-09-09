@@ -10,12 +10,13 @@ import {
   FaImages,
   FaAward
 } from 'react-icons/fa';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { assetUrl } from '../../utils/assetUrl';
 import './ResumeOverlay.css';
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || '3.11.174'}/pdf.worker.min.js`;
+// Configure PDF.js worker using bundled local worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 const DEFAULT_DOC = {
   url: assetUrl('/resume.pdf'),
@@ -38,13 +39,14 @@ const ResumeOverlay = () => {
   const renderTasksRef = useRef([]);
 
   const doc = activeDocument || DEFAULT_DOC;
-  const imageList = doc.images && doc.images.length > 0
+  const rawImages = doc.images && doc.images.length > 0
     ? doc.images
-    : (doc.url && /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(doc.url) ? [assetUrl(doc.url)] : []);
+    : (doc.url && /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(doc.url) ? [doc.url] : []);
 
+  const imageList = rawImages.map((img) => assetUrl(img));
   const isImageMode = imageList.length > 0;
   const activeImageUrl = isImageMode ? imageList[activeImgIdx] || imageList[0] : null;
-  const targetPdfUrl = !isImageMode ? assetUrl(doc.url || '/resume.pdf') : null;
+  const targetPdfUrl = !isImageMode && doc.url ? assetUrl(doc.url) : assetUrl('/resume.pdf');
 
   // Derive download file and link
   const currentDownloadUrl = isImageMode ? activeImageUrl : targetPdfUrl;
