@@ -1,0 +1,90 @@
+.achievements-section {
+  padding: 6rem 0;
+  margin-bottom: 4rem;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+.achievement-card {
+  background: linear-gradient(135deg, #f4e8d3 0%, #d8c3a5 100%);
+  border: 2px solid #bda27e;
+  padding: 3rem 2rem;
+  position: relative;
+  box-shadow: 3px 3px 15px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 20px var(--gold-glow);
+  border-color: var(--gold-glow-bright);
+}
+
+.achievement-content h3 {
+  color: #3e2723;
+  font-family: var(--font-magic);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.achievement-content p {
+  color: #4e342e;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: #4e342e;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.achievement-list li {
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 0.25rem;
+}
+
+.achievement-list li:hover {
+  color: #b80000;
+  text-shadow: 0 0 8px rgba(184, 0, 0, 0.2);
+  transform: translateX(4px);
+}
+
+.wax-seal {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 60px;
+  height: 60px;
+  background-color: #8b0000;
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 2px 2px 5px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.wax-seal::after {
+  content: 'M';
+  color: rgba(255, 215, 0, 0.7);
+  font-family: var(--font-magic);
+  font-size: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}

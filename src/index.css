@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --bg-parchment: #2c241b;
+  --bg-parchment-light: #3e3326;
+  --text-primary: #e6d7c3;
+  --text-secondary: #c2ab87;
+  --gold-glow: rgba(255, 215, 0, 0.6);
+  --gold-glow-bright: rgba(255, 215, 0, 0.9);
+  --font-magic: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-parchment);
+  background-image: radial-gradient(circle at center, #3a2f24 0%, #1a1510 100%);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-magic);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* Lumos pulse effect for headers */
+.lumos-header {
+  animation: lumosPulse 4s infinite alternate ease-in-out;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  color: #fff3d1;
+}
+
+@keyframes lumosPulse {
+  0% {
+    text-shadow: 0 0 5px var(--gold-glow), 0 0 10px var(--gold-glow);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--gold-glow-bright), 0 0 20px var(--gold-glow-bright), 0 0 30px #fff;
+  }
+  100% {
+    text-shadow: 0 0 5px var(--gold-glow), 0 0 10px var(--gold-glow);
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  cursor: none;
+}
+
+/* Maintain pointer cursor over interactive anchors and buttons */
+.app-container a,
+.app-container button,
+.app-container [role="button"] {
+  cursor: none;
+}
+
+.portfolio-main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+

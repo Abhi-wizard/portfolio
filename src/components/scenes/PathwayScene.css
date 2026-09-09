@@ -1,0 +1,330 @@
+.pathway-scene-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #06090c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Fullscreen Background Image Layer */
+.pathway-image-container {
+  position: absolute;
+  top: -3%;
+  left: -3%;
+  width: 106%;
+  height: 106%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.25s ease-out;
+}
+
+.pathway-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  filter: brightness(0.88) contrast(1.12) saturate(1.15);
+}
+
+/* Ambient Moonlight & Mist Layers */
+.pathway-moonlight-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(140, 185, 235, 0.2) 0%,
+    rgba(30, 45, 65, 0.4) 60%,
+    rgba(6, 10, 15, 0.8) 100%
+  );
+  pointer-events: none;
+}
+
+.pathway-cinematic-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0.55) 75%,
+    rgba(0, 0, 0, 0.88) 100%
+  );
+  pointer-events: none;
+}
+
+.pathway-mist-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 85%,
+    rgba(200, 220, 245, 0.1) 0%,
+    rgba(120, 150, 185, 0.04) 50%,
+    transparent 80%
+  );
+  filter: blur(25px);
+}
+
+.mist-one {
+  animation: pathwayMistOne 32s linear infinite alternate;
+}
+
+.mist-two {
+  animation: pathwayMistTwo 24s linear infinite alternate-reverse;
+  opacity: 0.7;
+}
+
+@keyframes pathwayMistOne {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-35%); }
+}
+
+@keyframes pathwayMistTwo {
+  0% { transform: translateX(-25%); }
+  100% { transform: translateX(15%); }
+}
+
+/* Floating Arcane Embers */
+.pathway-embers-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pathway-ember {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #64dfdf;
+  box-shadow: 0 0 8px #64dfdf, 0 0 16px #fff;
+  opacity: 0;
+  animation: pathwayEmberFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes pathwayEmberFloat {
+  0% { opacity: 0; transform: translateY(10px) scale(0.6); }
+  40% { opacity: 0.85; transform: translateY(-20px) scale(1.1); }
+  80% { opacity: 0.35; transform: translateY(-45px) scale(0.7); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.2); }
+}
+
+/* Central Identity Chamber Composition */
+.pathway-chamber-container {
+  position: relative;
+  z-index: 10;
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  pointer-events: none;
+}
+
+/* Talisman Mirror */
+.pathway-talisman {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 0.2rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.pathway-talisman .talisman-backlight {
+  position: absolute;
+  width: 125%;
+  height: 125%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, rgba(212, 175, 55, 0.15) 60%, transparent 80%);
+  filter: blur(14px);
+  animation: talismanAuraPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.pathway-talisman.hovered .talisman-backlight {
+  background: radial-gradient(circle, rgba(255, 240, 150, 0.7) 0%, rgba(255, 215, 0, 0.3) 60%, transparent 85%);
+  filter: blur(18px);
+}
+
+.pathway-talisman .talisman-rune-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.pathway-talisman .talisman-rune-ring.outer {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(255, 215, 0, 0.65);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.2);
+  animation: spinTalismanCW 25s linear infinite;
+}
+
+.pathway-talisman .talisman-rune-ring.inner {
+  width: 86%;
+  height: 86%;
+  border: 1px dotted rgba(255, 240, 180, 0.8);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  animation: spinTalismanCCW 18s linear infinite;
+}
+
+.pathway-talisman .talisman-frame {
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  border: 2px solid #ffd700;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(0, 0, 0, 0.7);
+  background: #14100c;
+}
+
+.pathway-talisman .talisman-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+}
+
+.pathway-talisman:hover .talisman-img {
+  transform: scale(1.06);
+}
+
+.pathway-talisman .talisman-gem {
+  position: absolute;
+  bottom: 2px;
+  z-index: 3;
+  color: #ffd700;
+  font-size: 0.85rem;
+  background: #1a140e;
+  border: 1px solid #ffd700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px #ffd700;
+}
+
+/* Chamber Intro Content */
+.pathway-intro-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.pathway-badge {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffd700;
+  letter-spacing: 2.5px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.9);
+  opacity: 0.95;
+}
+
+.pathway-name {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: clamp(2.2rem, 4.2vw, 3.2rem);
+  font-weight: 700;
+  color: #fff8e7;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 35px rgba(212, 175, 55, 0.4), 0 3px 6px rgba(0, 0, 0, 0.95);
+  line-height: 1.1;
+  margin: 0;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.pathway-intro-content.glowing .pathway-name {
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(255, 235, 150, 0.95), 0 0 50px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.4);
+}
+
+.pathway-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #ffd700 50%, transparent 100%);
+  margin: 0.1rem 0;
+  position: relative;
+}
+
+.pathway-divider .divider-gem {
+  position: absolute;
+  color: #ffd700;
+  font-size: 0.75rem;
+  text-shadow: 0 0 8px #ffd700;
+  background: #14100c;
+  padding: 0 6px;
+}
+
+.pathway-title {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 500;
+  color: #e6d7c3;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+.pathway-welcome-note {
+  max-width: 540px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  line-height: 1.55;
+  color: #c8b79b;
+  margin: 0.1rem 0 0;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+}
+
+@media (max-width: 768px) {
+  .pathway-scene-wrapper {
+    padding: 2rem 1rem 4rem;
+  }
+  .pathway-name {
+    font-size: 2rem;
+  }
+  .pathway-chamber-container {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}

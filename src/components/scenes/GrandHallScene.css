@@ -1,0 +1,243 @@
+/* ==========================================================================
+   GRAND HALL CHAMBER SCENE - IDENTITY & ARCHITECTURAL HERO COMPOSITION
+   ========================================================================== */
+
+.grandhall-scene-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.grandhall-ambient-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(10, 8, 6, 0.05) 0%,
+    rgba(10, 8, 6, 0.35) 65%,
+    rgba(6, 4, 3, 0.72) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grandhall-chamber-container {
+  position: relative;
+  z-index: 10;
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  pointer-events: none;
+}
+
+/* Talisman Mirror */
+.grandhall-talisman {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 0.2rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.talisman-backlight {
+  position: absolute;
+  width: 125%;
+  height: 125%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, rgba(212, 175, 55, 0.15) 60%, transparent 80%);
+  filter: blur(14px);
+  animation: talismanAuraPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.grandhall-talisman.hovered .talisman-backlight {
+  background: radial-gradient(circle, rgba(255, 240, 150, 0.7) 0%, rgba(255, 215, 0, 0.3) 60%, transparent 85%);
+  filter: blur(18px);
+}
+
+.talisman-rune-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.talisman-rune-ring.outer {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(255, 215, 0, 0.65);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.2);
+  animation: spinTalismanCW 25s linear infinite;
+}
+
+.talisman-rune-ring.inner {
+  width: 86%;
+  height: 86%;
+  border: 1px dotted rgba(255, 240, 180, 0.8);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  animation: spinTalismanCCW 18s linear infinite;
+}
+
+.talisman-frame {
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  border: 2px solid #ffd700;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(0, 0, 0, 0.7);
+  background: #14100c;
+}
+
+.talisman-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+}
+
+.grandhall-talisman:hover .talisman-img {
+  transform: scale(1.06);
+}
+
+.talisman-gem {
+  position: absolute;
+  bottom: 2px;
+  z-index: 3;
+  color: #ffd700;
+  font-size: 0.85rem;
+  background: #1a140e;
+  border: 1px solid #ffd700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px #ffd700;
+}
+
+@keyframes spinTalismanCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinTalismanCCW {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes talismanAuraPulse {
+  0%, 100% { transform: scale(1); opacity: 0.65; }
+  50% { transform: scale(1.15); opacity: 0.95; }
+}
+
+/* Chamber Intro Content */
+.grandhall-intro-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.grandhall-badge {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffd700;
+  letter-spacing: 2.5px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.9);
+  opacity: 0.95;
+}
+
+.grandhall-name {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: clamp(2.2rem, 4.2vw, 3.2rem);
+  font-weight: 700;
+  color: #fff8e7;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 35px rgba(212, 175, 55, 0.4), 0 3px 6px rgba(0, 0, 0, 0.95);
+  line-height: 1.1;
+  margin: 0;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.grandhall-intro-content.glowing .grandhall-name {
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(255, 235, 150, 0.95), 0 0 50px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.4);
+}
+
+.grandhall-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #ffd700 50%, transparent 100%);
+  margin: 0.1rem 0;
+  position: relative;
+}
+
+.divider-gem {
+  position: absolute;
+  color: #ffd700;
+  font-size: 0.75rem;
+  text-shadow: 0 0 8px #ffd700;
+  background: #14100c;
+  padding: 0 6px;
+}
+
+.grandhall-title {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 500;
+  color: #e6d7c3;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+.grandhall-welcome-note {
+  max-width: 540px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  line-height: 1.55;
+  color: #c8b79b;
+  margin: 0.1rem 0 0;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+}
+
+@media (max-width: 768px) {
+  .grandhall-scene-wrapper {
+    padding: 2rem 1rem 4rem;
+  }
+  .grandhall-name {
+    font-size: 2rem;
+  }
+  .grandhall-chamber-container {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}

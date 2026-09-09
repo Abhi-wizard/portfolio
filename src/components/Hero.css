@@ -1,0 +1,327 @@
+.courtyard-hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+.courtyard-ambient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(25, 18, 12, 0.1) 0%,
+    rgba(14, 11, 8, 0.55) 70%,
+    rgba(8, 6, 4, 0.85) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.courtyard-inworld-container {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+/* Enchanted Portrait Talisman (Real profile.jpg) */
+.enchanted-portrait-talisman {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.talisman-backlight-glow {
+  position: absolute;
+  width: 115%;
+  height: 115%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, rgba(212, 175, 55, 0.15) 60%, transparent 80%);
+  filter: blur(14px);
+  animation: talismanAura 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.enchanted-portrait-talisman.hovered .talisman-backlight-glow {
+  background: radial-gradient(circle, rgba(255, 235, 130, 0.7) 0%, rgba(255, 215, 0, 0.3) 60%, transparent 85%);
+  filter: blur(18px);
+}
+
+.talisman-rune-orbit {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.talisman-rune-orbit.outer {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(255, 215, 0, 0.65);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.2);
+  animation: spinRuneClockwise 25s linear infinite;
+}
+
+.talisman-rune-orbit.inner {
+  width: 86%;
+  height: 86%;
+  border: 1px dotted rgba(255, 240, 180, 0.8);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  animation: spinRuneCounter 18s linear infinite;
+}
+
+.talisman-image-holder {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  border: 2.5px solid #ffd700;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(0, 0, 0, 0.7);
+  background: #14100c;
+}
+
+.talisman-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+}
+
+.enchanted-portrait-talisman:hover .talisman-portrait {
+  transform: scale(1.06);
+}
+
+.talisman-crest-gem {
+  position: absolute;
+  bottom: 6px;
+  z-index: 3;
+  color: #ffd700;
+  font-size: 1rem;
+  background: #1a140e;
+  border: 1px solid #ffd700;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+@keyframes spinRuneClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinRuneCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes talismanAura {
+  0%, 100% { transform: scale(1); opacity: 0.65; }
+  50% { transform: scale(1.15); opacity: 0.95; }
+}
+
+/* In-World Illuminated Typography */
+.inworld-typography {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.arcane-realm-badge {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  opacity: 0.9;
+}
+
+.inworld-name {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 3.8rem;
+  font-weight: 700;
+  color: #fff8e7;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.4), 2px 2px 4px rgba(0,0,0,0.8);
+  line-height: 1.1;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.inworld-typography.highlighted .inworld-name {
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(255, 235, 150, 0.95), 0 0 50px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.4);
+}
+
+.arcane-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #ffd700 50%, transparent 100%);
+  margin: 0.4rem 0;
+  position: relative;
+}
+
+.divider-flair {
+  position: absolute;
+  color: #ffd700;
+  font-size: 0.75rem;
+  text-shadow: 0 0 8px #ffd700;
+  background: #14100c;
+  padding: 0 6px;
+}
+
+.inworld-profession {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #e6d7c3;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.inworld-typography.highlighted .inworld-profession {
+  color: #fff4cc;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
+}
+
+.inworld-summary {
+  max-width: 680px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #c8b79b;
+  margin-top: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Actions & Buttons */
+.inworld-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.runic-socials {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.runic-social-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d4af37;
+  text-decoration: none;
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(30, 24, 18, 0.5);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.runic-social-anchor:hover {
+  color: #fff;
+  border-color: #ffd700;
+  background: rgba(60, 48, 32, 0.8);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.inworld-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.enchanted-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 2.2rem;
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.enchanted-cta-btn.primary {
+  background: linear-gradient(135deg, #d4af37 0%, #aa8222 100%);
+  color: #14100c;
+  border: 1px solid #fff4cc;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.enchanted-cta-btn.secondary {
+  background: rgba(34, 27, 20, 0.7);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.wand-interaction-hint {
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(255, 215, 0, 0.75);
+  letter-spacing: 1px;
+  animation: hintGlow 3s ease-in-out infinite;
+}
+
+@keyframes hintGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; text-shadow: 0 0 8px #ffd700; }
+}
+
+@media (max-width: 768px) {
+  .inworld-name {
+    font-size: 2.6rem;
+  }
+  .inworld-profession {
+    font-size: 1.35rem;
+  }
+  .inworld-summary {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+}

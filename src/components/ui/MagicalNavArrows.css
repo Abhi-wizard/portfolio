@@ -1,0 +1,93 @@
+.magical-nav-arrows-container {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 3rem;
+  pointer-events: none;
+  z-index: 150;
+}
+
+.magical-nav-btn {
+  position: relative;
+  pointer-events: auto;
+  background: rgba(22, 17, 12, 0.75);
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+  color: #fff8e7;
+  padding: 0.8rem 1.6rem;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.3);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.magical-nav-btn.next-btn {
+  margin-left: auto;
+}
+
+.magical-nav-btn.prev-btn {
+  margin-right: auto;
+}
+
+.magical-nav-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+.nav-btn-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+  animation: sweepNav 4s infinite;
+}
+
+@keyframes sweepNav {
+  0% {
+    left: -100%;
+  }
+
+  35%,
+  100% {
+    left: 100%;
+  }
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+  color: #ffd700;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.8));
+}
+
+.nav-label {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .magical-nav-arrows-container {
+    padding: 0 1.2rem;
+    bottom: 1.5rem;
+  }
+
+  .magical-nav-btn {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+}

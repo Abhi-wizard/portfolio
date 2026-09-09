@@ -1,0 +1,16 @@
+.magical-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.magical-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}

@@ -1,0 +1,53 @@
+.wand-cursor-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.wand-tip {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 60%, rgba(255, 215, 0, 0) 100%);
+  box-shadow: 0 0 12px #ffd700, 0 0 25px rgba(255, 215, 0, 0.8);
+  pointer-events: none;
+  transition: width 0.15s ease, height 0.15s ease;
+  will-change: transform;
+}
+
+.wand-tip.casting {
+  width: 24px;
+  height: 24px;
+  top: -12px;
+  left: -12px;
+  background: radial-gradient(circle, #ffffff 0%, #00ffff 40%, #ffd700 80%, rgba(255, 215, 0, 0) 100%);
+  box-shadow: 0 0 25px #00ffff, 0 0 40px #ffd700;
+}
+
+.wand-spark {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffd700;
+  box-shadow: 0 0 8px #ffd700, 0 0 12px #fff;
+  pointer-events: none;
+  animation: fadeSpark 0.6s ease-out forwards;
+}
+
+@keyframes fadeSpark {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translateY(15px);
+  }
+}
