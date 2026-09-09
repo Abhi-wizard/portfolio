@@ -619,6 +619,38 @@
   margin-bottom: 0.4rem;
 }
 
+.stela-exp-cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.9rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(20, 36, 60, 0.75) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 6px;
+  font-family: var(--font-magic, 'Cinzel', serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffd700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.stela-exp-cert-badge:hover {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(30, 50, 85, 0.9) 100%);
+  border-color: #ffd700;
+  color: #fff8e7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.35);
+}
+
+.exp-cert-icon {
+  color: #ffd700;
+  font-size: 0.9rem;
+}
+
 /* Honors & Certifications Lists */
 .stela-honors-list {
   display: flex;

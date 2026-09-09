@@ -1,28 +1,24 @@
 import React from 'react';
+import { experienceData } from '../data/portfolioData';
+import { useMagicalScene } from '../context/MagicalSceneContext';
+import { FaScroll, FaExternalLinkAlt } from 'react-icons/fa';
 import './Experience.css';
 
-const experienceData = [
-  {
-    role: "Project Trainee",
-    company: "EliteEikan Technologies LLC",
-    duration: "January 2026 - July 2026",
-    details: [
-      "Built scalable backend services with Spring Boot and PostgreSQL utilizing Hibernate and Flyway, paired with a responsive Angular frontend.",
-      "Engineered a Python/FastAPI microservice for OCR document extraction using PaddleOCR and Tesseract.",
-      "Integrated secure workflows with GraphQL and Azure Auth, and implemented mass data processing using Apache POI."
-    ]
-  },
-  {
-    role: "Web Development Intern",
-    company: "Prime Solutions",
-    duration: "February 2024",
-    details: [
-      "Developed responsive web interfaces and improved UI design consistency across project deliverables."
-    ]
-  }
-];
-
 const Experience = () => {
+  const { openDocumentModal } = useMagicalScene();
+
+  const handleOpenCert = (exp) => {
+    if (!exp.certificateUrl) return;
+    openDocumentModal({
+      url: exp.certificateUrl,
+      title: exp.certificateTitle || `${exp.company} — Certificate of Completion`,
+      recipient: "TO: THE EVALUATION BOARD & MANAGEMENT",
+      address: "EliteEikan Technologies LLC / Engineering Directorate",
+      downloadName: "EliteEikan_Certificate.jpg",
+      type: "certificate"
+    });
+  };
+
   return (
     <section id="experience" className="experience-section">
       <h2 className="lumos-header">The Ministry of Magic Archives</h2>
@@ -38,6 +34,18 @@ const Experience = () => {
                   <li key={dIdx}>{detail}</li>
                 ))}
               </ul>
+              {exp.certificateUrl && (
+                <button
+                  type="button"
+                  className="exp-cert-btn"
+                  onClick={() => handleOpenCert(exp)}
+                  title="Click to view Certificate of Completion"
+                >
+                  <FaScroll />
+                  <span>View Certificate of Completion</span>
+                  <FaExternalLinkAlt />
+                </button>
+              )}
             </div>
           </div>
         ))}

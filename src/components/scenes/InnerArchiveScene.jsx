@@ -89,7 +89,7 @@ const StelaProjectCard = ({ project, idx, onOpenLightbox }) => {
 };
 
 const InnerArchiveScene = () => {
-  const { currentRealm, openResumeModal } = useMagicalScene();
+  const { currentRealm, openResumeModal, openDocumentModal } = useMagicalScene();
   const mouse = useMouseParallax(0.025);
 
   const [lightboxState, setLightboxState] = useState({
@@ -103,9 +103,18 @@ const InnerArchiveScene = () => {
     return null;
   }
 
-  const openDocument = (url) => {
-    if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+  const openDocument = (docConfigOrUrl, fallbackTitle = 'Magical Document') => {
+    if (!docConfigOrUrl) return;
+    if (typeof docConfigOrUrl === 'object' && docConfigOrUrl.url) {
+      openDocumentModal(docConfigOrUrl);
+    } else if (typeof docConfigOrUrl === 'string') {
+      openDocumentModal({
+        url: docConfigOrUrl,
+        title: fallbackTitle,
+        recipient: 'TO: THE SCHOLARLY COUNCIL',
+        address: 'Hogwarts Research Guild Archives',
+        downloadName: 'Archival_Document.pdf'
+      });
     }
   };
 
@@ -283,6 +292,24 @@ const InnerArchiveScene = () => {
                         <li key={dIdx}>{detail}</li>
                       ))}
                     </ul>
+                    {exp.certificateUrl && (
+                      <div
+                        className="stela-exp-cert-badge clickable-codex"
+                        onClick={() => openDocument({
+                          url: exp.certificateUrl,
+                          title: exp.certificateTitle || `${exp.company} — Certificate of Completion`,
+                          recipient: "TO: THE EVALUATION BOARD & MANAGEMENT",
+                          address: "EliteEikan Technologies LLC / Engineering Directorate",
+                          downloadName: "EliteEikan_Certificate.jpg",
+                          type: "certificate"
+                        })}
+                        title="Click to view Certificate of Completion"
+                      >
+                        <FaScroll className="exp-cert-icon" />
+                        <span>View Certificate of Completion</span>
+                        <FaExternalLinkAlt className="mini-ext" />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -304,14 +331,22 @@ const InnerArchiveScene = () => {
                   <div
                     key={idx}
                     className="stela-honor-item clickable-codex"
-                    onClick={() => openDocument(honor.url)}
-                    title="Click to view Paper / Certificate"
+                    onClick={() => openDocument({
+                      url: honor.url,
+                      images: honor.images,
+                      title: honor.docTitle || honor.name,
+                      recipient: honor.recipient || 'TO: THE SCHOLARLY COUNCIL',
+                      address: honor.address || 'Sri Ramakrishna College / SRM Institute',
+                      downloadName: honor.downloadName || 'Research_Presentation.pdf',
+                      type: honor.type || 'paper'
+                    })}
+                    title="Click to reveal research paper scroll"
                   >
                     <div className="honor-bullet-rune">✦</div>
                     <div className="honor-text-box">
                       <span className="honor-name">{honor.name}</span>
                       <span className="honor-view-tag">
-                        View Scroll <FaExternalLinkAlt className="mini-ext" />
+                        Open Scroll <FaExternalLinkAlt className="mini-ext" />
                       </span>
                     </div>
                   </div>
@@ -335,14 +370,21 @@ const InnerArchiveScene = () => {
                   <div
                     key={idx}
                     className="stela-honor-item clickable-codex"
-                    onClick={() => openDocument(cert.url)}
-                    title="Click to view Certificate"
+                    onClick={() => openDocument({
+                      url: cert.url,
+                      title: cert.docTitle || cert.name,
+                      recipient: cert.recipient || 'TO: THE CERTIFICATION BOARD',
+                      address: cert.address || 'Accredited Academy Vault',
+                      downloadName: cert.downloadName || 'Certificate.pdf',
+                      type: 'certificate'
+                    })}
+                    title="Click to reveal certification parchment"
                   >
                     <div className="honor-bullet-rune">📜</div>
                     <div className="honor-text-box">
                       <span className="honor-name">{cert.name}</span>
                       <span className="honor-view-tag">
-                        View Certificate <FaExternalLinkAlt className="mini-ext" />
+                        Open Scroll <FaExternalLinkAlt className="mini-ext" />
                       </span>
                     </div>
                   </div>
@@ -366,7 +408,14 @@ const InnerArchiveScene = () => {
                   <div
                     key={idx}
                     className="stela-degree-card clickable-codex"
-                    onClick={() => openDocument(edu.certificateUrl)}
+                    onClick={() => openDocument({
+                      url: edu.certificateUrl,
+                      title: edu.docTitle || edu.title,
+                      recipient: edu.recipient || 'TO: THE ACADEMIC SENATE',
+                      address: edu.address || edu.institution,
+                      downloadName: edu.downloadName || 'Degree_Scroll.pdf',
+                      type: 'degree'
+                    })}
                     title={edu.actionText || 'Click to view degree scroll'}
                   >
                     <div className="wax-seal-mini">✦</div>

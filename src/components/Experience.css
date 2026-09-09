@@ -88,3 +88,28 @@
 .details-list li {
   margin-bottom: 0.5rem;
 }
+
+.exp-cert-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(30, 20, 10, 0.8) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 6px;
+  color: #ffd700;
+  font-family: var(--font-magic);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.exp-cert-btn:hover {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(50, 35, 15, 0.9) 100%);
+  border-color: #ffd700;
+  color: #fff8e7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}

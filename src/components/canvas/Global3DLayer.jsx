@@ -155,7 +155,7 @@ const Global3DLayer = () => {
         inset: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 99999,
+        zIndex: 100010,
         pointerEvents: 'none',
         overflow: 'hidden',
         display: 'block'

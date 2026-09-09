@@ -22,8 +22,9 @@ export const MagicalSceneProvider = ({ children }) => {
   // Entrance Lifecycle: 'entrance' -> 'zooming' -> 'entered'
   const [entranceState, setEntranceState] = useState('entrance');
 
-  // Magical Resume Modal Overlay State
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  // Magical Parchment Document / Resume Modal Overlay State
+  const [activeDocument, setActiveDocument] = useState(null);
+  const [isDocumentOpen, setIsDocumentOpen] = useState(false);
 
   // Mouse state for 3D parallax
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -40,13 +41,30 @@ export const MagicalSceneProvider = ({ children }) => {
     }, 1600);
   }, []);
 
-  const openResumeModal = useCallback(() => {
-    setIsResumeOpen(true);
+  const openDocumentModal = useCallback((docConfig) => {
+    if (!docConfig) return;
+    setActiveDocument(docConfig);
+    setIsDocumentOpen(true);
   }, []);
 
-  const closeResumeModal = useCallback(() => {
-    setIsResumeOpen(false);
+  const closeDocumentModal = useCallback(() => {
+    setIsDocumentOpen(false);
   }, []);
+
+  const openResumeModal = useCallback(() => {
+    openDocumentModal({
+      url: '/resume.pdf',
+      title: 'SACRED CODEX: T. ABHIMANYU (RESUME)',
+      recipient: 'TO: THE ESTEEMED RECRUITER',
+      address: '4 Privet Drive / Ministry of Innovation',
+      downloadName: 'Abhimanyu_Resume.pdf',
+      type: 'resume'
+    });
+  }, [openDocumentModal]);
+
+  const closeResumeModal = useCallback(() => {
+    closeDocumentModal();
+  }, [closeDocumentModal]);
 
   const transitionToRealm = useCallback((realmName) => {
     if (realmName === currentRealm || isTransitioningRealm) return;
@@ -112,11 +130,13 @@ export const MagicalSceneProvider = ({ children }) => {
         enterArchives,
         onQuidditchObjectClick,
         capturedQuidditchItem,
-        mousePos,
-        setMousePos,
-        isResumeOpen,
+        isResumeOpen: isDocumentOpen,
         openResumeModal,
-        closeResumeModal
+        closeResumeModal,
+        activeDocument,
+        isDocumentOpen,
+        openDocumentModal,
+        closeDocumentModal
       }}
     >
       {children}
