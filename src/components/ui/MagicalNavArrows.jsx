@@ -50,22 +50,6 @@ const MagicalNavArrows = () => {
         )}
 
         {/* Forward Buttons */}
-        {currentRealm === 'grand_hall' && (
-          <motion.button
-            key="forward-to-pathway"
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 30 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            onClick={() => transitionToRealm('pathway')}
-            className="magical-nav-btn next-btn"
-            title="Travel to the Pathway"
-          >
-            <div className="nav-btn-glow" />
-            <span className="nav-label">THE PATHWAY</span>
-            <FaChevronRight className="nav-icon" />
-          </motion.button>
-        )}
 
         {currentRealm === 'pathway' && (
           <motion.button

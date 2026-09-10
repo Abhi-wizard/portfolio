@@ -5,6 +5,7 @@ import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { useMouseParallax } from '../../hooks/useMouseParallax';
 import { createParticleField } from './ParticleField';
 import { loadGLBModel } from './GLBModel';
+import { loadMagicMirror } from './MagicMirror';
 import { assetUrl } from '../../utils/assetUrl';
 import './MagicalCanvas.css';
 
@@ -21,8 +22,14 @@ const MagicalCanvas = () => {
     isLowPerformance,
     setLoadingProgress,
     entranceState,
-    currentRealm
+    currentRealm,
+    transitionToRealm
   } = useMagicalScene();
+
+  const transitionToRealmRef = useRef(transitionToRealm);
+  useEffect(() => {
+    transitionToRealmRef.current = transitionToRealm;
+  }, [transitionToRealm]);
 
   const mouse = useMouseParallax(0.04);
   const mouseRef = useRef(mouse);
@@ -187,6 +194,11 @@ const MagicalCanvas = () => {
       }
     });
 
+    // 7b. REAL 3D MODEL: Magic Mirror (magic_mirror.glb) inside the Great Hall
+    const magicMirror = loadMagicMirror({
+      scene
+    });
+
     // 8. Keyboard Navigation (WASD / Arrow Keys / Q / E) for Walking into the Grand Hall
     const keysPressed = {};
     const handleKeyDown = (e) => {
@@ -205,6 +217,84 @@ const MagicalCanvas = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+
+    // 8b. Real 3D Magic Mirror Raycasting & Pointer Interaction (Hover + Click)
+    const raycaster = new THREE.Raycaster();
+    const mouseCoords = new THREE.Vector2();
+    let pointerDownPos = { x: 0, y: 0 };
+    let pointerDownTime = 0;
+    let isPointerDragging = false;
+
+    const handlePointerDown = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      pointerDownPos = { x: clientX, y: clientY };
+      pointerDownTime = Date.now();
+      isPointerDragging = false;
+    };
+
+    const handlePointerMove = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      if (pointerDownTime > 0) {
+        const dist = Math.hypot(clientX - pointerDownPos.x, clientY - pointerDownPos.y);
+        if (dist > 7) {
+          isPointerDragging = true;
+        }
+      }
+
+      // Raycast hover check against Magic Mirror
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouseCoords.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      mouseCoords.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouseCoords, camera);
+      const mirrorTargets = magicMirror.getInteractiveObjects();
+      if (mirrorTargets.length > 0) {
+        const intersects = raycaster.intersectObjects(mirrorTargets, true);
+        if (intersects.length > 0) {
+          document.body.style.cursor = 'pointer';
+          magicMirror.setHover(true);
+        } else {
+          document.body.style.cursor = 'auto';
+          magicMirror.setHover(false);
+        }
+      }
+    };
+
+    const handlePointerUp = (e) => {
+      const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+      const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+      const dist = Math.hypot(clientX - pointerDownPos.x, clientY - pointerDownPos.y);
+      const elapsed = Date.now() - pointerDownTime;
+      pointerDownTime = 0;
+
+      // Genuine click/tap: minimal movement and short duration
+      if (!isPointerDragging && dist < 10 && elapsed < 650) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouseCoords.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+        mouseCoords.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouseCoords, camera);
+        const mirrorTargets = magicMirror.getInteractiveObjects();
+        if (mirrorTargets.length > 0) {
+          const intersects = raycaster.intersectObjects(mirrorTargets, true);
+          if (intersects.length > 0) {
+            console.log('[MagicalCanvas] Magic Mirror 3D clicked! Transitioning to Pathway...');
+            magicMirror.triggerClick();
+            document.body.style.cursor = 'auto';
+            if (transitionToRealmRef.current) {
+              transitionToRealmRef.current('pathway');
+            }
+          }
+        }
+      }
+    };
+
+    renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+    renderer.domElement.addEventListener('pointermove', handlePointerMove);
+    renderer.domElement.addEventListener('pointerup', handlePointerUp);
 
     // 9. Camera Pose Interpolation Engine (for "Enter Grand Hall", "High Table", "Exterior" buttons)
     let camAnimation = null;
@@ -297,6 +387,9 @@ const MagicalCanvas = () => {
       // Update GLB Grand Hall model
       grandHallModel.update(delta, currentMouse);
 
+      // Update GLB Magic Mirror model
+      magicMirror.update(delta);
+
       renderer.render(scene, camera);
     };
 
@@ -317,10 +410,15 @@ const MagicalCanvas = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('magical-camera-goto', handleCameraGoto);
+      renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
+      renderer.domElement.removeEventListener('pointermove', handlePointerMove);
+      renderer.domElement.removeEventListener('pointerup', handlePointerUp);
+      document.body.style.cursor = 'auto';
       cancelAnimationFrame(animationFrameId);
       controls.dispose();
       particleSystem.dispose();
       grandHallModel.dispose();
+      magicMirror.dispose();
       controlsRef.current = null;
       cameraRef.current = null;
       if (container && renderer.domElement) {
@@ -335,7 +433,27 @@ const MagicalCanvas = () => {
       ref={containerRef}
       className="magical-canvas-container"
       aria-hidden="true"
-    />
+    >
+      <button
+        type="button"
+        className="sr-only"
+        onClick={() => transitionToRealm('pathway')}
+        aria-label="Enter the Pathway through the Magic Mirror"
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          padding: 0,
+          margin: '-1px',
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          border: 0
+        }}
+      >
+        Enter the Pathway through the Magic Mirror
+      </button>
+    </div>
   );
 };
 
