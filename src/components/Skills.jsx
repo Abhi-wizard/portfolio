@@ -4,11 +4,11 @@ import './Skills.css';
 const skillCategories = [
   {
     title: "Transfiguration (Frontend & Web)",
-    skills: ["Angular", "React.js", "Kotlin", "Jetpack Compose", "HTML5", "CSS3", "JavaScript"]
+    skills: ["Angular", "React.js", "Kotlin", "HTML5", "CSS3", "JavaScript"]
   },
   {
     title: "Potions (Backend & Programming)",
-    skills: ["Spring Boot", "Python FastAPI", "Node.js", "PHP", "Java", "Python"]
+    skills: ["Spring Boot", "Python FastAPI", "Node.js", "PHP", "Java"]
   },
   {
     title: "Ancient Runes (Databases)",
@@ -16,7 +16,7 @@ const skillCategories = [
   },
   {
     title: "Magical Artifacts (AI / Tools)",
-    skills: ["ChatGPT", "Claude", "Gemini 2.5 Pro API", "Prompt Engineering", "Git", "Android Studio"]
+    skills: ["ChatGPT", "Claude", "Gemini Pro API", "Prompt Engineering", "Git", "Android Studio"]
   }
 ];
 

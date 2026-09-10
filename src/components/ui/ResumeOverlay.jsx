@@ -427,9 +427,6 @@ const ResumeOverlay = () => {
                 <div className="pdf-pages-list">
                   {pdfPages.map((_, index) => (
                     <div key={index} className="pdf-page-wrapper">
-                      <div className="page-watermark">
-                        ARCHIVAL PARCHMENT — FOLIO {index + 1} OF {pdfPages.length}
-                      </div>
                       <canvas
                         ref={(el) => (canvasRefs.current[index] = el)}
                         className="pdf-page-canvas"
