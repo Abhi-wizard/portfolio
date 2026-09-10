@@ -1,84 +1,141 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import './MirrorDiscoverySpell.css';
 
 /**
- * MirrorDiscoverySpell: Procedural blue magic beam and cinematic "FIND THE MIRROR"
- * clue cast by the Elder Wand upon entering the Hogwarts Grand Hall.
+ * MirrorDiscoverySpell: Cinematic magical discovery sequence.
+ * 
+ * Timeline:
+ * 0.0s - 0.45s: Wand tip subtle ignition / charging
+ * 0.45s - 0.85s: 3D Elder Wand wave / casting flick
+ * 0.85s - 1.55s: Blue magical sparks & energy spread across the Great Hall
+ * 1.55s - 1.90s: Magic settles into a soft radiant aura
+ * 1.90s - 6.25s: "FIND THE MIRROR" text emerges and remains continuously readable (~4.35s)
+ * 6.25s - 7.20s: Text and energy smoothly dissolve
+ * 7.20s: Component completely unmounts and cleans up
  */
 const MirrorDiscoverySpell = ({ onComplete }) => {
   const { castSpell } = useMagicalScene();
-  const [phase, setPhase] = useState('charging'); // 'charging' -> 'beam' -> 'text' -> 'dissipating' -> 'done'
+  // 'ignition' -> 'wave' -> 'sparks' -> 'settling' -> 'text' -> 'dissipating' -> 'done'
+  const [phase, setPhase] = useState('ignition');
+  const onCompleteRef = useRef(onComplete);
+  const castSpellRef = useRef(castSpell);
 
   useEffect(() => {
-    // 1. Trigger the Elder Wand 3D cast action
-    castSpell('find_mirror');
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
-    // 2. Exact timeline sequence
-    // 0.0s - 0.4s: Blue arcane energy starts forming at wand tip
-    const tBeam = setTimeout(() => {
-      setPhase('beam');
-    }, 400);
+  useEffect(() => {
+    castSpellRef.current = castSpell;
+  }, [castSpell]);
 
-    // 0.8s: "FIND THE MIRROR" text emerges within the blue radiance
-    const tText = setTimeout(() => {
-      setPhase('text');
+  useEffect(() => {
+    // 1. Phase 1 -> 2: Wand Wave (0.45s)
+    const tWave = setTimeout(() => {
+      setPhase('wave');
+      // Trigger the 3D Elder Wand casting wave motion
+      if (castSpellRef.current) {
+        castSpellRef.current('find_mirror');
+      }
+    }, 450);
+
+    // 2. Phase 2 -> 3: Blue Sparks & Energy Spread (0.85s)
+    const tSparks = setTimeout(() => {
+      setPhase('sparks');
     }, 850);
 
-    // 2.1s: Text begins dissolving
+    // 3. Phase 3 -> 4: Magic Settles (1.55s)
+    const tSettling = setTimeout(() => {
+      setPhase('settling');
+    }, 1550);
+
+    // 4. Phase 4 -> 5: "FIND THE MIRROR" Banner Emerges (1.90s)
+    const tText = setTimeout(() => {
+      setPhase('text');
+    }, 1900);
+
+    // 5. Phase 5 -> 6: Dissipating (~4.35s visible duration: 1.90s -> 6.25s)
     const tDissolve = setTimeout(() => {
       setPhase('dissipating');
-    }, 2100);
+    }, 6250);
 
-    // 2.9s: Energy fully dissipates into the Great Hall atmosphere
+    // 6. Phase 6 -> 7: Complete Unmount & Cleanup (7.20s)
     const tEnd = setTimeout(() => {
       setPhase('done');
-      if (onComplete) onComplete();
-    }, 2900);
+      if (onCompleteRef.current) {
+        onCompleteRef.current();
+      }
+    }, 7200);
 
     return () => {
-      clearTimeout(tBeam);
+      clearTimeout(tWave);
+      clearTimeout(tSparks);
+      clearTimeout(tSettling);
       clearTimeout(tText);
       clearTimeout(tDissolve);
       clearTimeout(tEnd);
     };
-  }, [castSpell, onComplete]);
+  }, []);
 
   if (phase === 'done') return null;
 
   return (
     <div className="mirror-discovery-spell-layer" aria-hidden="true">
-      {/* 1. Procedural Volumetric Blue Magic Beam / Conic Energy Ray */}
+      {/* 1. Wand Tip Ignition Starburst (0.0s -> 0.85s) */}
       <AnimatePresence>
-        {(phase === 'beam' || phase === 'text') && (
+        {(phase === 'ignition' || phase === 'wave') && (
+          <motion.div
+            key="wand-ignition"
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{
+              opacity: phase === 'wave' ? 0.95 : 0.75,
+              scale: phase === 'wave' ? 1.25 : 0.85
+            }}
+            exit={{ opacity: 0, scale: 1.6, filter: 'blur(12px)' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="wand-tip-ignition-node"
+          >
+            <div className="wand-ignition-core" />
+            <div className="wand-ignition-halo" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 2. Procedural Volumetric Blue Magic Beam / Conic Energy Ray (0.85s -> 7.2s) */}
+      <AnimatePresence>
+        {(phase === 'sparks' || phase === 'settling' || phase === 'text' || phase === 'dissipating') && (
           <motion.div
             key="magical-beam"
-            initial={{ opacity: 0, scaleY: 0.2, scaleX: 0.5 }}
+            initial={{ opacity: 0, scale: 0.4 }}
             animate={{
-              opacity: phase === 'text' ? [0.85, 1, 0.9] : 0.85,
-              scaleY: 1,
-              scaleX: 1
+              opacity: phase === 'dissipating' ? 0 : (phase === 'sparks' ? 0.95 : 0.85),
+              scale: phase === 'dissipating' ? 1.08 : 1,
+              filter: phase === 'dissipating' ? 'blur(20px)' : 'blur(0px)'
             }}
-            exit={{ opacity: 0, scale: 1.1, filter: 'blur(20px)' }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            exit={{ opacity: 0, scale: 1.15, filter: 'blur(25px)' }}
+            transition={{
+              opacity: { duration: phase === 'dissipating' ? 1.2 : 0.6, ease: 'easeInOut' },
+              scale: { duration: 0.7, ease: 'easeOut' },
+              filter: { duration: 1.0, ease: 'easeInOut' }
+            }}
             className="blue-spell-beam-container"
           >
             <div className="blue-spell-core-beam" />
             <div className="blue-spell-volumetric-cone" />
             <div className="blue-spell-shimmer-ring" />
             
-            {/* Shimmering Blue Energy Particles */}
+            {/* Shimmering & Traveling Blue Energy Particles */}
             <div className="blue-spell-particles">
-              {Array.from({ length: 24 }).map((_, i) => (
+              {Array.from({ length: 28 }).map((_, i) => (
                 <span
                   key={i}
-                  className="blue-sparkle"
+                  className={`blue-sparkle ${phase === 'sparks' ? 'bursting' : ''}`}
                   style={{
-                    left: `${40 + (i * 7) % 22}%`,
-                    top: `${20 + (i * 9) % 55}%`,
-                    animationDelay: `${(i * 0.12) % 1.2}s`,
-                    animationDuration: `${1.4 + (i % 3) * 0.3}s`,
+                    left: `${35 + (i * 6.5) % 32}%`,
+                    top: `${18 + (i * 8.5) % 62}%`,
+                    animationDelay: `${(i * 0.08) % 1.2}s`,
+                    animationDuration: `${1.4 + (i % 4) * 0.35}s`,
                     transform: `scale(${0.6 + (i % 4) * 0.25})`
                   }}
                 />
@@ -88,26 +145,26 @@ const MirrorDiscoverySpell = ({ onComplete }) => {
         )}
       </AnimatePresence>
 
-      {/* 2. Arcane "FIND THE MIRROR" Cinematic Text Banner */}
+      {/* 3. Arcane "FIND THE MIRROR" Cinematic Text Banner (1.90s -> 6.25s) */}
       <AnimatePresence>
         {phase === 'text' && (
           <motion.div
             key="mirror-clue-text"
-            initial={{ opacity: 0, scale: 0.85, y: 15, filter: 'blur(10px)' }}
+            initial={{ opacity: 0, scale: 0.92, y: 14, filter: 'blur(8px)' }}
             animate={{
               opacity: 1,
-              scale: [0.85, 1.04, 1.0],
+              scale: 1,
               y: 0,
               filter: 'blur(0px)'
             }}
             exit={{
               opacity: 0,
-              scale: 1.08,
-              y: -10,
-              filter: 'blur(12px)',
-              transition: { duration: 0.45, ease: 'easeInOut' }
+              scale: 1.04,
+              y: -8,
+              filter: 'blur(10px)',
+              transition: { duration: 0.85, ease: [0.4, 0, 0.2, 1] }
             }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             className="mirror-clue-banner"
           >
             <div className="clue-rune-flourish top">✦ &nbsp; • &nbsp; ✧ &nbsp; • &nbsp; ✦</div>
