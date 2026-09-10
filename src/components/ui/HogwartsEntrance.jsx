@@ -92,7 +92,7 @@ const HogwartsEntrance = () => {
             transition={{ duration: 1.6, delay: 0.8 }}
             className="entrance-main-title"
           >
-            THE HOGWARTS ARCHIVES
+            ENTER THE WIZARD'S CODEX
           </motion.h1>
 
           <motion.p
@@ -101,7 +101,7 @@ const HogwartsEntrance = () => {
             transition={{ duration: 1.4, delay: 1.1 }}
             className="entrance-subtitle"
           >
-            Gateway to the magical archives & developer records
+            Where magic meets code, and ideas become digital realms.
           </motion.p>
 
           <motion.button
@@ -121,7 +121,7 @@ const HogwartsEntrance = () => {
             className="enter-archives-cta-btn"
           >
             <span className="btn-glow-ring" />
-            <span className="btn-label">ENTER THE ARCHIVES ✦</span>
+            <span className="btn-label">BEGIN THE JOURNEY ✦</span>
           </motion.button>
         </div>
 

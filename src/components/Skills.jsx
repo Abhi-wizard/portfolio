@@ -15,10 +15,6 @@ const skillCategories = [
     skills: ["PostgreSQL", "MongoDB", "MySQL", "Firebase"]
   },
   {
-    title: "The Forge (DevOps & Tools)",
-    skills: ["Docker", "Kubernetes", "Terraform", "Maven"]
-  },
-  {
     title: "Magical Artifacts (AI / Tools)",
     skills: ["ChatGPT", "Claude", "Gemini 2.5 Pro API", "Prompt Engineering", "Git", "Android Studio"]
   }

@@ -195,7 +195,7 @@ const InnerArchiveScene = () => {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="innerarchive-realm-badge"
           >
-            ✦ CHAPTER II: THE INNER ARCHIVE ✦
+
           </motion.div>
 
           <motion.h1
@@ -372,11 +372,12 @@ const InnerArchiveScene = () => {
                     className="stela-honor-item clickable-codex"
                     onClick={() => openDocument({
                       url: cert.url,
+                      images: cert.images,
                       title: cert.docTitle || cert.name,
                       recipient: cert.recipient || 'TO: THE CERTIFICATION BOARD',
                       address: cert.address || 'Accredited Academy Vault',
                       downloadName: cert.downloadName || 'Certificate.pdf',
-                      type: 'certificate'
+                      type: cert.type || 'certificate'
                     })}
                     title="Click to reveal certification parchment"
                   >

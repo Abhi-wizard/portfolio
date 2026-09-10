@@ -28,11 +28,11 @@ const Achievements = () => {
         <div 
           className="achievement-card clickable-card"
           onClick={() => openLink({
-            url: "/certificates/mca_degree.pdf",
-            title: "MASTER OF COMPUTER APPLICATIONS (MCA) — DEGREE SCROLL",
+            url: assetUrl("/bharathiar university/bu.jpeg"),
+            title: "MASTER OF COMPUTER APPLICATIONS (MCA) — BHARATHIAR UNIVERSITY",
             recipient: "TO: THE ACADEMIC SENATE OF BHARATHIAR UNIVERSITY",
-            address: "Department of Computer Applications",
-            downloadName: "Abhimanyu_MCA_Degree.pdf"
+            address: "Department of Computer Applications, Coimbatore",
+            downloadName: "Abhimanyu_MCA_Degree.jpg"
           })}
           title="Click to reveal MCA scroll"
         >
@@ -47,11 +47,11 @@ const Achievements = () => {
         <div 
           className="achievement-card clickable-card"
           onClick={() => openLink({
-            url: "/certificates/bsc_degree.pdf",
-            title: "B.SC. COMPUTER TECHNOLOGY — DEGREE SCROLL",
+            url: assetUrl("/hindhustan/hicas.jpeg"),
+            title: "B.SC. COMPUTER TECHNOLOGY — HINDUSTHAN COLLEGE",
             recipient: "TO: THE ACADEMIC COUNCIL",
-            address: "Hindusthan College of Arts & Science",
-            downloadName: "Abhimanyu_BSc_Degree.pdf"
+            address: "Hindusthan College of Arts & Science, Coimbatore",
+            downloadName: "Abhimanyu_BSc_Degree.jpg"
           })}
           title="Click to reveal B.Sc. scroll"
         >
@@ -70,11 +70,12 @@ const Achievements = () => {
             <ul className="achievement-list">
               <li 
                 onClick={() => openLink({
-                  url: "/certificates/bi_dashboards.pdf",
+                  url: assetUrl("/Achivements/certificates/IBM.jpeg"),
                   title: "BI DASHBOARDS WITH IBM COGNOS & GOOGLE LOOKER",
                   recipient: "TO: THE EVALUATION BOARD",
                   address: "Coursera / IBM & Google Cloud Academy",
-                  downloadName: "BI_Dashboards_Certificate.pdf"
+                  downloadName: "IBM_Cognos_Looker_Certificate.jpeg",
+                  type: "certificate"
                 })}
                 title="Click to view Certificate"
               >
@@ -82,111 +83,16 @@ const Achievements = () => {
               </li>
               <li 
                 onClick={() => openLink({
-                  url: "/certificates/iot.pdf",
+                  url: assetUrl("/Achivements/certificates/Iot certificate.pdf"),
                   title: "INTRODUCTION TO INTERNET OF THINGS (IOT)",
-                  recipient: "TO: NPTEL REVIEW BOARD",
-                  address: "NPTEL / IIT Archive",
-                  downloadName: "IoT_Certificate.pdf"
+                  recipient: "TO: NATIONAL PROGRAMME ON TECHNOLOGY ENHANCED LEARNING",
+                  address: "NPTEL / IIT Kharagpur Archive",
+                  downloadName: "IoT_NPTEL_Certificate.pdf",
+                  type: "certificate"
                 })}
                 title="Click to view Certificate"
               >
                 Introduction to IoT (NPTEL)
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/certificates/photoshop.pdf",
-                  title: "GRAPHIC DESIGN WITH PHOTOSHOP",
-                  recipient: "TO: GREAT LEARNING ACADEMY",
-                  address: "Great Learning Verification Wing",
-                  downloadName: "Photoshop_Certificate.pdf"
-                })}
-                title="Click to view Certificate"
-              >
-                Graphic Design with Photoshop (Great Learning)
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/certificates/image_processing.pdf",
-                  title: "DIGITAL IMAGE PROCESSING",
-                  recipient: "TO: MATHWORKS RESEARCH WING",
-                  address: "MathWorks Academy",
-                  downloadName: "Image_Processing_Certificate.pdf"
-                })}
-                title="Click to view Certificate"
-              >
-                Digital Image Processing (MathWorks)
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/certificates/power_platform.pdf",
-                  title: "MICROSOFT POWER PLATFORM FUNDAMENTALS",
-                  recipient: "TO: MICROSOFT CERTIFIED PROFESSIONAL GUILD",
-                  address: "Microsoft Learn Credential Services",
-                  downloadName: "Power_Platform_Certificate.pdf"
-                })}
-                title="Click to view Certificate"
-              >
-                Microsoft Power Platform Fundamentals
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="achievement-card">
-          <div className="wax-seal"></div>
-          <div className="achievement-content">
-            <h3>Honors & Presentations</h3>
-            <ul className="achievement-list">
-              <li 
-                onClick={() => openLink({
-                  url: "/paper presentation/5G TECHNOLOGY.pdf",
-                  title: "EMERGING TRENDS IN 5G TECHNOLOGY (RESEARCH PRESENTATION)",
-                  recipient: "TO: THE SCHOLARLY COUNCIL & CHAIRPERSONS",
-                  address: "Sri Ramakrishna College of Arts & Science / Symposium Archives",
-                  downloadName: "5G_TECHNOLOGY_Paper.pdf",
-                  type: "paper"
-                })}
-                title="Click to view Paper"
-              >
-                "5G Technology" Paper at Sri Ramakrishna College
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/paper presentation/Crop Predication using ML.pdf",
-                  title: "CROP YIELD PREDICTION USING MACHINE LEARNING (RESEARCH PRESENTATION)",
-                  recipient: "TO: THE SCIENTIFIC & TECHNICAL REVIEW COMMITTEE",
-                  address: "SRM Institute of Science and Technology / National Symposium",
-                  downloadName: "Crop_Yield_Prediction_Using_ML.pdf",
-                  type: "paper"
-                })}
-                title="Click to view Paper"
-              >
-                "Crop Yield Prediction Using ML" Paper at SRM Institute
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/certificates/transport_layer_wsn_paper.pdf",
-                  title: "PERFORMANCE OF TRANSPORT LAYER IN WIRELESS SENSOR NETWORKS",
-                  recipient: "TO: THE DEPARTMENT OF COMPUTER SCIENCE",
-                  address: "PSGR Krishnammal College for Women",
-                  downloadName: "Transport_Layer_WSN_Paper.pdf",
-                  type: "paper"
-                })}
-                title="Click to view Paper"
-              >
-                "Performance of Transport Layer in WSN" Paper at PSGR Krishnammal College
-              </li>
-              <li 
-                onClick={() => openLink({
-                  url: "/certificates/symposium_certificate.pdf",
-                  title: "NATIONAL LEVEL TECHNICAL SYMPOSIUM — EDITORIAL & LEADERSHIP MERIT",
-                  recipient: "TO: THE EXECUTIVE COMMITTEE & PATRONS",
-                  address: "National Level Technical Symposium Directorate",
-                  downloadName: "Symposium_Organizer_Certificate.pdf"
-                })}
-                title="Click to view Certificate"
-              >
-                Organizer & Magazine Editor for a National Level Technical Symposium
               </li>
               <li 
                 onClick={() => openLink({
@@ -205,6 +111,54 @@ const Achievements = () => {
                 title="Click to view Certificates"
               >
                 College Level Poster Design Competitions
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="achievement-card">
+          <div className="wax-seal"></div>
+          <div className="achievement-content">
+            <h3>Honors & Presentations</h3>
+            <ul className="achievement-list">
+              <li 
+                onClick={() => openLink({
+                  url: assetUrl("/paper presentation/5G TECHNOLOGY.pdf"),
+                  title: "EMERGING TRENDS IN 5G TECHNOLOGY (RESEARCH PRESENTATION)",
+                  recipient: "TO: THE SCHOLARLY COUNCIL & CHAIRPERSONS",
+                  address: "Sri Ramakrishna College of Arts & Science / Symposium Archives",
+                  downloadName: "5G_TECHNOLOGY_Paper.pdf",
+                  type: "paper"
+                })}
+                title="Click to view Paper"
+              >
+                "5G Technology" Paper at Sri Ramakrishna College
+              </li>
+              <li 
+                onClick={() => openLink({
+                  url: assetUrl("/paper presentation/Crop Predication using ML.pdf"),
+                  title: "CROP YIELD PREDICTION USING MACHINE LEARNING (RESEARCH PRESENTATION)",
+                  recipient: "TO: THE SCIENTIFIC & TECHNICAL REVIEW COMMITTEE",
+                  address: "SRM Institute of Science and Technology / National Symposium",
+                  downloadName: "Crop_Yield_Prediction_Using_ML.pdf",
+                  type: "paper"
+                })}
+                title="Click to view Paper"
+              >
+                "Crop Yield Prediction Using ML" Paper at SRM Institute
+              </li>
+              <li 
+                onClick={() => openLink({
+                  url: assetUrl("/Achivements/magazine/MAGAZINE CTECH 2K24 (1).pdf"),
+                  title: "NATIONAL LEVEL TECHNICAL SYMPOSIUM MAGAZINE (CTECH 2K24)",
+                  recipient: "TO: THE EDITORIAL BOARD & SCHOLARLY COUNCIL",
+                  address: "Department of Computer Technology / Symposium Publications",
+                  downloadName: "Magazine_CTech_2k24.pdf",
+                  type: "paper"
+                })}
+                title="Click to view Magazine"
+              >
+                Organizer & Magazine Editor for a National Level Technical Symposium
               </li>
             </ul>
           </div>
