@@ -114,7 +114,7 @@ The 3D implementation directly interfaces with Three.js WebGL rendering contexts
 
 ## 📜 Document & PDF Viewer Engine
 
-The application includes a client-side document rasterization engine in [`ResumeOverlay.jsx`](file:///d:/portfolio/src/components/ui/ResumeOverlay.jsx):
+The application features a universal, client-side document rasterization engine in [`ResumeOverlay.jsx`](file:///d:/portfolio/src/components/ui/ResumeOverlay.jsx) that enables visitors on **all devices (Mobile, Tablet, and Desktop)** to view multi-page PDFs directly inside the same-tab parchment modal:
 
 ```
 PDF Document URL ──► pdfjsLib.getDocument() ──► PDFDocumentProxy
@@ -129,7 +129,10 @@ PDF Document URL ──► pdfjsLib.getDocument() ──► PDFDocumentProxy
              HTML5 <canvas> Frame 1                                              HTML5 <canvas> Frame N
 ```
 
-* **High-DPI Canvas Rendering:** Calculates container widths up to $860\text{px}$, computes viewport scale ratios, scales 2D canvas drawing contexts by `window.devicePixelRatio`, and paints vector-crisp PDF pages.
+* **Cross-Device Same-Tab Viewing:** Fully renders PDFs inline on mobile phones, tablets, and desktop browsers on the same screen without requiring external PDF plugins or opening new tabs.
+* **Dual-Tier Web Worker Architecture:** Uses the primary bundled worker with automatic runtime fallback to official CDN workers (`cdnjs` / `unpkg`) if mobile browser sandboxing restricts local worker execution.
+* **High-DPI Dynamic Scaling:** Responsive viewport calculations ($window.innerWidth \times 0.90$ on mobile, scaling up to $860\text{px}$ on desktop) with `devicePixelRatio` clamping ($\le 2.0$) ensure vector-crisp typography without exceeding mobile GPU canvas limits.
+* **Lifecycle-Synchronized Painting:** Rasterization cleanly synchronizes with modal open states, ensuring `<canvas>` DOM nodes are mounted before painting starts.
 * **Task Cancellation Safety:** Tracks active PDF rendering promises via a mutable `renderTasksRef`. If the user navigates away or switches documents mid-render, incomplete canvas tasks are cancelled immediately to prevent memory leaks and worker exceptions.
 * **Multi-Format Support:** Automatically switches between single-page PDFs, multi-page PDFs, and multi-image certificate collections with thumbnail strip selectors and individual download links.
 
