@@ -6,17 +6,19 @@ import {
   FaDownload,
   FaScroll,
   FaChevronLeft,
-  FaChevronRight,
-  FaImages,
-  FaAward
+  FaChevronRight
 } from 'react-icons/fa';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { useMagicalScene } from '../../context/MagicalSceneContext';
 import { assetUrl } from '../../utils/assetUrl';
 import './ResumeOverlay.css';
 
-// Configure PDF.js worker using bundled local worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+// Configure PDF.js worker with primary local bundle and CDN worker fallback
+try {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker || `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+} catch (e) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+}
 
 const DEFAULT_DOC = {
   url: assetUrl('/resume.pdf'),
@@ -53,6 +55,13 @@ const ResumeOverlay = () => {
   const currentDownloadName = isImageMode
     ? (doc.downloadName ? doc.downloadName.replace(/\.[^.]+$/, `_${activeImgIdx + 1}$&`) : `Certificate_${activeImgIdx + 1}.jpg`)
     : (doc.downloadName || 'Magical_Document.pdf');
+
+  // Absolute URL for Google Docs Viewer fallback on mobile
+  const fullAbsolutePdfUrl = targetPdfUrl.startsWith('http')
+    ? targetPdfUrl
+    : typeof window !== 'undefined'
+      ? `${window.location.origin}${targetPdfUrl}`
+      : targetPdfUrl;
 
   // Trigger envelope opening sequence on modal open
   useEffect(() => {
@@ -131,8 +140,16 @@ const ResumeOverlay = () => {
     });
     renderTasksRef.current = [];
 
+    const loadOptions = {
+      url: encodeURI(url),
+      cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/cmaps/`,
+      cMapPacked: true,
+      standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/standard_fonts/`,
+      isEvalSupported: false
+    };
+
     try {
-      const loadingTask = pdfjsLib.getDocument(encodeURI(url));
+      const loadingTask = pdfjsLib.getDocument(loadOptions);
       const pdf = await loadingTask.promise;
       const numPages = pdf.numPages;
       const pagesArray = [];
@@ -144,42 +161,82 @@ const ResumeOverlay = () => {
 
       setPdfPages(pagesArray);
       setPdfLoading(false);
-
-      // Render each page to its corresponding parchment canvas
-      setTimeout(() => {
-        pagesArray.forEach((page, index) => {
-          const canvas = canvasRefs.current[index];
-          if (!canvas) return;
-
-          const context = canvas.getContext('2d');
-          const dpr = window.devicePixelRatio || 1;
-          const containerWidth = Math.min(window.innerWidth * 0.86, 860);
-          const unscaledViewport = page.getViewport({ scale: 1 });
-          const scale = containerWidth / unscaledViewport.width;
-          const viewport = page.getViewport({ scale });
-
-          canvas.width = viewport.width * dpr;
-          canvas.height = viewport.height * dpr;
-          canvas.style.width = `${viewport.width}px`;
-          canvas.style.height = `${viewport.height}px`;
-
-          context.scale(dpr, dpr);
-
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
-
-          const renderTask = page.render(renderContext);
-          renderTasksRef.current.push(renderTask);
-        });
-      }, 120);
     } catch (err) {
-      console.warn('[MagicalDocumentViewer] PDF.js rendering error, falling back to direct embed:', err);
-      setPdfError(true);
-      setPdfLoading(false);
+      console.warn('[MagicalDocumentViewer] Primary PDF.js load error, trying CDN worker fallback:', err);
+      try {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+        const fallbackTask = pdfjsLib.getDocument(loadOptions);
+        const pdf = await fallbackTask.promise;
+        const pagesArray = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          pagesArray.push(await pdf.getPage(i));
+        }
+        setPdfPages(pagesArray);
+        setPdfLoading(false);
+      } catch (fallbackErr) {
+        console.warn('[MagicalDocumentViewer] PDF.js worker fallback failed, enabling responsive iframe fallback:', fallbackErr);
+        setPdfError(true);
+        setPdfLoading(false);
+      }
     }
   };
+
+  // Dedicated responsive page rendering effect - triggers once modal is fully open and canvases are mounted
+  useEffect(() => {
+    if (animStage !== 'open' || pdfPages.length === 0 || isImageMode) return;
+
+    // Cancel old render tasks before starting new renders
+    renderTasksRef.current.forEach((t) => {
+      try { t?.cancel(); } catch (_e) { /* ignore */ }
+    });
+    renderTasksRef.current = [];
+
+    const renderTimer = setTimeout(() => {
+      pdfPages.forEach((page, index) => {
+        const canvas = canvasRefs.current[index];
+        if (!canvas) return;
+
+        const context = canvas.getContext('2d');
+        if (!context) return;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        const screenW = window.innerWidth;
+        const isMobile = screenW < 768;
+        const containerWidth = isMobile
+          ? Math.max(screenW * 0.90, 280)
+          : Math.min(screenW * 0.86, 860);
+
+        const unscaledViewport = page.getViewport({ scale: 1 });
+        const targetInnerWidth = containerWidth - (isMobile ? 20 : 44);
+        const scale = targetInnerWidth / unscaledViewport.width;
+        const viewport = page.getViewport({ scale: Math.max(scale, 0.35) });
+
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+        // Reset any existing transform
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.scale(dpr, dpr);
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+
+        try {
+          const renderTask = page.render(renderContext);
+          renderTasksRef.current.push(renderTask);
+        } catch (e) {
+          console.warn('Canvas render error on page', index + 1, e);
+        }
+      });
+    }, 60);
+
+    return () => clearTimeout(renderTimer);
+  }, [animStage, pdfPages, isImageMode]);
 
   if (!isDocumentOpen && animStage === 'idle') {
     return null;
@@ -382,25 +439,25 @@ const ResumeOverlay = () => {
                 </div>
               )}
 
-              {/* Direct Embed / Object Fallback if Canvas Rendering was bypassed */}
+              {/* Zero-Failure Mobile / Tablet Iframe Fallback if Canvas Rendering is Bypassed */}
               {(!pdfLoading && (pdfError || (!isImageMode && pdfPages.length === 0))) && (
                 <div className="pdf-embed-fallback">
-                  <object
-                    data={`${targetPdfUrl}#toolbar=0&navpanes=0&scrollbar=1`}
-                    type="application/pdf"
-                    className="pdf-object-frame"
-                  >
-                    <div className="pdf-no-support">
-                      <p>Your magical vessel does not support inline PDF viewing.</p>
-                      <a
-                        href={targetPdfUrl}
-                        download={doc.downloadName || 'Magical_Document.pdf'}
-                        className="viewer-action-btn download"
-                      >
-                        <FaDownload /> Download Direct PDF
-                      </a>
-                    </div>
-                  </object>
+                  <iframe
+                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(fullAbsolutePdfUrl)}&embedded=true`}
+                    className="pdf-iframe-frame"
+                    title={doc.title}
+                    frameBorder="0"
+                  />
+                  <div className="pdf-fallback-footer-bar">
+                    <p>Having trouble viewing inline?</p>
+                    <a
+                      href={targetPdfUrl}
+                      download={doc.downloadName || 'Magical_Document.pdf'}
+                      className="viewer-action-btn download fallback-dl"
+                    >
+                      <FaDownload /> Download Direct PDF
+                    </a>
+                  </div>
                 </div>
               )}
             </div>
