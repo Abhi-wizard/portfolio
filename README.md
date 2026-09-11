@@ -1,244 +1,642 @@
-# 3D Interactive WebGL Portfolio Web Application
+# 3D Interactive Developer Portfolio
 
-An interactive 3D portfolio web application built with **React 19**, **Vite**, and native **Three.js**. The application integrates real-time WebGL environments, 3D model loaders with Google DRACO compression, raycasting collision detection, autonomous physics trajectories, custom particle emitters, and client-side PDF.js canvas rendering into a unified browser-based single-page application.
+A browser-based interactive portfolio built with **React, Vite, and native Three.js**.
 
----
-
-## ✨ Features
-
-* **Native Three.js WebGL Environment:** Full-fidelity 3D rendering using Three.js with ACES Filmic tone mapping, SRGB color space correction, exponential fog, and PCF soft shadow maps.
-* **GLTF / GLB 3D Pipeline:** Asynchronous loading of `.glb` models with Google DRACO mesh compression and in-memory caching to eliminate redundant network fetches.
-* **Camera Systems & Controls:** Configurable `OrbitControls` with damping, screen-space panning, distance clamping, and a cubic ease-in-out camera pose interpolation engine.
-* **First-Person WASD Walk Navigation:** Real-time keyboard event listeners calculating horizontal movement vectors relative to camera orientation for exploring 3D spaces.
-* **Raycasting & Collision Interactivity:** Three.js `Raycaster` integration handling hover states and click detections on 3D objects (e.g., Magic Mirror portal, Quidditch trophy).
-* **Persistent 3D Wand Cursor Layer:** Real-time 3D cursor that unprojects 2D pointer coordinates into 3D camera space, calculates velocity-based inertia tilts, and emits spark particle trails.
-* **Autonomous 3D Flight Physics:** Autonomous Golden Snitch and Quidditch trophy flight paths powered by cubic Bézier spline interpolation, wing flutter animation mixers, and micro-jitter displacements.
-* **Cinematic Phased Scene Transitions:** Multi-stage narrative state machine coordinating timed CSS animations, progressive text ink-writing effects, and radial curtain overlays.
-* **In-Card Project Carousels & Fullscreen Lightbox:** Dynamic project showcase with multi-screenshot navigation, slide indicator badges, and Spring-animated modal zoom.
-* **Client-Side PDF & Document Viewer:** Multi-page PDF canvas rasterization using `pdfjs-dist` and web workers, featuring high-DPI scaling, render task cancellation, multi-certificate image galleries, and direct downloads.
-* **Hardware & GPU Tier Adaptation:** Dynamic detection of mobile devices and integrated GPUs to throttle shadow maps, clamp device pixel ratios, and adjust particle counts.
-* **Automated CI/CD Pipeline:** Fully automated build and deployment to GitHub Pages via GitHub Actions with `.nojekyll` bypass.
+The application combines real-time WebGL scenes, interactive 3D models, cinematic scene transitions, custom cursor effects, project galleries, document rendering, responsive UI, and automated GitHub Pages deployment into a single-page web experience.
 
 ---
 
-## 🧰 Tech Stack
+## Overview
 
-| Layer / Subsystem | Technology | Version | Purpose |
-| :--- | :--- | :--- | :--- |
-| **Frontend Framework** | React | `19.2.8` | Component architecture, lifecycle management, and UI state |
-| **Build & Dev Tooling** | Vite | `8.2.0` | Development server, HMR, bundling, and asset pipelines |
-| **3D Graphics Engine** | Three.js | `0.185.1` | WebGL canvas rendering, camera control, lighting, and raycasting |
-| **3D Compression** | DRACOLoader | `1.5.7` | Decompressing packed GLTF/GLB geometric meshes |
-| **Animation Engine** | Framer Motion | `13.1.0` | UI transitions, spring-physics modals, and overlay lifecycle |
-| **PDF Rendering** | PDF.js (`pdfjs-dist`) | `6.3.289` | Parsing and rendering multi-page PDF documents to HTML5 canvas |
-| **UI Iconography** | React Icons (`react-icons/fa`) | `5.7.0` | Vector interface iconography |
-| **Styling & Design System** | Vanilla CSS3 | Standard | Custom properties, 3D transforms, glassmorphism, responsive grid |
-| **State Management** | React Context API | Standard | Global realm routing, document viewer state, and spell dispatch |
-| **Static Code Analysis** | Oxlint | `1.75.0` | High-performance JavaScript/JSX linting |
+This project is designed as an interactive 3D portfolio rather than a conventional static portfolio website.
+
+The application is organized around a sequence of interactive scenes:
+
+```text
+Entrance
+   ↓
+Grand Hall
+   ↓
+Pathway
+   ↓
+Inner Archive
+   ↓
+Projects / Experience / Skills / Achievements
+```
+
+The 3D environment and interface are controlled through React state while Three.js handles the real-time WebGL rendering and object interactions.
 
 ---
 
-## 🏗️ Architecture
+## Key Features
 
-The application is structured into decoupled UI, 3D Canvas, and State Management layers:
+### 3D WebGL Environment
+
+* Native Three.js WebGL rendering
+* GLTF/GLB 3D model support
+* DRACO-compressed model loading
+* Dynamic lighting and shadows
+* Atmospheric fog and environmental effects
+* Responsive camera and viewport handling
+
+### 3D Navigation
+
+* `OrbitControls` for mouse-based scene rotation
+* Screen-space panning
+* Camera distance and angle limits
+* Smooth camera interpolation
+* WASD / Arrow-key navigation
+* First-person style movement inside 3D environments
+
+### Interactive 3D Objects
+
+The application uses Three.js raycasting for object-level interaction.
+
+Examples include:
+
+* Interactive Magic Mirror
+* Golden Snitch
+* Quidditch trophy
+* Elder Wand cursor
+* 3D scene navigation objects
+
+Objects can respond to pointer movement, hover states, and click interactions.
+
+### Elder Wand Cursor
+
+The portfolio includes a persistent 3D wand cursor rendered as a top-level overlay.
+
+The system:
+
+* Converts 2D mouse coordinates into 3D coordinates
+* Tracks pointer movement
+* Applies velocity-based rotational inertia
+* Renders spark particles
+* Maintains a high rendering order above the environment
+* Uses `depthTest = false` to prevent the wand from disappearing behind scene geometry
+
+### Animated 3D Flight
+
+The Golden Snitch and Quidditch elements use procedural movement instead of fixed animation paths.
+
+The implementation includes:
+
+* Cubic Bézier trajectories
+* Real-time orientation based on movement direction
+* Wing animation using `AnimationMixer`
+* Micro-jitter motion
+* Particle effects
+
+### Cinematic Scene Transitions
+
+Scene changes are coordinated through application state and timed animation phases.
+
+The pathway sequence includes:
+
+1. Introductory text animation
+2. Profile image reveal
+3. Character-by-character name animation
+4. Scene progression
+5. Transition into interactive portfolio content
+
+### Project Gallery
+
+Projects are displayed using reusable project cards with:
+
+* Multiple screenshots
+* In-card carousel navigation
+* Image indicators
+* Fullscreen lightbox
+* Spring-based modal animation
+* Keyboard navigation
+
+### Resume & Document Viewer
+
+Documents are rendered directly inside the application using **PDF.js**.
+
+The viewer supports:
+
+* Multi-page PDFs
+* Canvas-based rendering
+* High-DPI rendering
+* Responsive document scaling
+* In-app viewing without opening a separate browser tab
+* Render-task cancellation
+* Certificate image galleries
+* Direct document downloads
+
+---
+
+# Technology Stack
+
+| Layer         | Technology        | Purpose                                           |
+| ------------- | ----------------- | ------------------------------------------------- |
+| Frontend      | React 19          | Component architecture and application state      |
+| Build Tool    | Vite 8            | Development server, HMR and production builds     |
+| 3D Engine     | Three.js 0.185    | WebGL rendering, cameras, lighting and raycasting |
+| 3D Loader     | GLTFLoader        | Loading GLTF/GLB models                           |
+| Compression   | DRACOLoader       | Loading compressed 3D geometry                    |
+| Animation     | Framer Motion     | UI transitions and modal animations               |
+| PDF Rendering | PDF.js            | Client-side PDF rendering                         |
+| Icons         | React Icons       | UI iconography                                    |
+| Styling       | Vanilla CSS3      | Layout, animations, responsive design and effects |
+| State         | React Context API | Global application and scene state                |
+| Linting       | Oxlint            | Static JavaScript/JSX analysis                    |
+| Deployment    | GitHub Actions    | Automated production deployment                   |
+| Hosting       | GitHub Pages      | Static application hosting                        |
+
+---
+
+# Application Architecture
+
+The application separates scene management, global state, WebGL rendering and interface overlays.
 
 ```mermaid
 flowchart TD
-    subgraph Client [Browser Runtime]
-        DOM[DOM Viewport]
-    end
 
-    subgraph State [State & Lifecycle Layer]
-        Ctx[MagicalSceneContext]
-        Stages[Realm & Document State Machine]
-        Ctx <--> Stages
-    end
+    App[React Application]
 
-    subgraph Canvases [3D WebGL Layer]
-        MC[MagicalCanvas - Grand Hall Environment]
-        G3D[Global3DLayer - Top-Level 3D Overlay]
-        Loader[GLBModel & DRACOLoader]
-        Cache[(In-Memory GLTF Cache)]
+    App --> Context[Magical Scene Context]
+    App --> SceneManager[Scene Manager]
+    App --> Canvas[Three.js Canvas]
+    App --> Overlays[Global UI Overlays]
 
-        MC --> Loader
-        G3D --> Loader
-        Loader <--> Cache
-    end
+    Context --> State[Scene & Document State]
 
-    subgraph Narrative [Scene Management Layer]
-        SM[SceneManager Router]
-        S_Ent[HogwartsEntrance Scene]
-        S_Hall[GrandHallScene & Discovery HUD]
-        S_Path[PathwayScene & Ink Reveal]
-        S_Arch[InnerArchiveScene & Project Grid]
+    SceneManager --> Entrance[Entrance Scene]
+    SceneManager --> Hall[Grand Hall]
+    SceneManager --> Pathway[Pathway]
+    SceneManager --> Archive[Inner Archive]
 
-        SM --> S_Ent
-        SM --> S_Hall
-        SM --> S_Path
-        SM --> S_Arch
-    end
+    Canvas --> Loader[GLTFLoader]
+    Loader --> Draco[DRACOLoader]
+    Loader --> Cache[GLTF In-Memory Cache]
 
-    subgraph Overlays [Global Overlays & Viewers]
-        WC[WandCursor 2D Sparks]
-        Nav[MagicalNavArrows]
-        RO[ResumeOverlay - PDF.js & Image Parchment]
-    end
+    Overlays --> Wand[Elder Wand Cursor]
+    Overlays --> Navigation[Navigation Controls]
+    Overlays --> Resume[Resume / Document Viewer]
 
-    DOM --> Ctx
-    Ctx --> Canvases
-    Ctx --> Narrative
-    Ctx --> Overlays
+    Archive --> Projects[Project Gallery]
+    Archive --> Achievements[Achievements]
+    Archive --> Experience[Experience]
 ```
 
 ---
 
-## 🎮 3D Graphics & Rendering Pipeline
+# Scene System
 
-The 3D implementation directly interfaces with Three.js WebGL rendering contexts through React `useRef` mounts:
+The application uses a state-driven scene system.
 
-### 1. Scene Composition & Lighting
-* **Hogwarts Grand Hall:** Rendered in [`MagicalCanvas.jsx`](file:///d:/portfolio/src/components/canvas/MagicalCanvas.jsx) with ambient lighting (`0xffecd2`), dynamic flickering PointLights simulating floating candles ($\sin(t \cdot 5.5)$ noise), and directional stained-glass window illumination (`0x70a0d0`).
-* **Environment Models:** Geometry parsed via `GLTFLoader` with materials configured for `DoubleSide` depth writing and PBR roughness/metalness parameters.
+### Entrance
 
-### 2. Interaction & Collision Mechanics
-* **3D Magic Mirror Raycasting:** The Magic Mirror model ([`MagicMirror.jsx`](file:///d:/portfolio/src/components/canvas/MagicMirror.jsx)) contains an interactive container. Pointer events map normalized device coordinates to a `THREE.Raycaster`. Hovering interpolates point light glow intensity, while click interactions initiate a 350ms flash transition into the next realm.
-* **Persistent 3D Wand Cursor:** Implemented in [`WandCursor3D.js`](file:///d:/portfolio/src/components/canvas/WandCursor3D.js) with `renderOrder = 99999` and `depthTest = false`. Pointer coordinates are unprojected into a 3D plane $2.8$ units in front of the camera, applying dynamic rotational inertia ($\text{tiltX}$, $\text{tiltY}$, $\text{tiltZ}$) derived from mouse velocity vectors.
+The initial scene introduces the interactive experience and provides the transition into the main 3D environment.
 
-### 3. Trajectory Generation & Particle Systems
-* **Bézier Flight Physics:** [`GoldenSnitchFlyer.js`](file:///d:/portfolio/src/components/canvas/GoldenSnitchFlyer.js) and [`QuidditchFlyer.js`](file:///d:/portfolio/src/components/canvas/QuidditchFlyer.js) calculate cubic Bézier curves across the scene:
-  $$\mathbf{B}(t) = (1-t)^2 \mathbf{P}_0 + 2(1-t)t \mathbf{P}_1 + t^2 \mathbf{P}_2$$
-  Models evaluate forward look-ahead tangents $\mathbf{T} = \mathbf{B}(t + \Delta t) - \mathbf{B}(t)$ to orient flight roll and bank angles in real-time.
-* **Custom Spark Emitters:** Pre-allocated Float32 buffer arrays manage positions, velocities, and particle lifespans with additive blending (`THREE.AdditiveBlending`).
+### Grand Hall
 
----
+The Grand Hall is a Three.js environment containing the primary interactive 3D elements.
 
-## 📜 Document & PDF Viewer Engine
+It supports:
 
-The application features a universal, client-side document rasterization engine in [`ResumeOverlay.jsx`](file:///d:/portfolio/src/components/ui/ResumeOverlay.jsx) that enables visitors on **all devices (Mobile, Tablet, and Desktop)** to view multi-page PDFs directly inside the same-tab parchment modal:
+* Camera rotation
+* Camera movement
+* Interactive objects
+* Lighting effects
+* Navigation into the portfolio pathways
 
-```
-PDF Document URL ──► pdfjsLib.getDocument() ──► PDFDocumentProxy
-                                                        │
-                      ┌─────────────────────────────────┴─────────────────────────────────┐
-                      ▼                                                                   ▼
-             Page 1 (Viewport Scale)                                             Page N (Viewport Scale)
-                      │                                                                   │
-             Canvas Context 2D                                                   Canvas Context 2D
-                      │ (window.devicePixelRatio)                                         │ (window.devicePixelRatio)
-                      ▼                                                                   ▼
-             HTML5 <canvas> Frame 1                                              HTML5 <canvas> Frame N
-```
+### Pathway
 
-* **Cross-Device Same-Tab Viewing:** Fully renders PDFs inline on mobile phones, tablets, and desktop browsers on the same screen without requiring external PDF plugins or opening new tabs.
-* **Dual-Tier Web Worker Architecture:** Uses the primary bundled worker with automatic runtime fallback to official CDN workers (`cdnjs` / `unpkg`) if mobile browser sandboxing restricts local worker execution.
-* **High-DPI Dynamic Scaling:** Responsive viewport calculations ($window.innerWidth \times 0.90$ on mobile, scaling up to $860\text{px}$ on desktop) with `devicePixelRatio` clamping ($\le 2.0$) ensure vector-crisp typography without exceeding mobile GPU canvas limits.
-* **Lifecycle-Synchronized Painting:** Rasterization cleanly synchronizes with modal open states, ensuring `<canvas>` DOM nodes are mounted before painting starts.
-* **Task Cancellation Safety:** Tracks active PDF rendering promises via a mutable `renderTasksRef`. If the user navigates away or switches documents mid-render, incomplete canvas tasks are cancelled immediately to prevent memory leaks and worker exceptions.
-* **Multi-Format Support:** Automatically switches between single-page PDFs, multi-page PDFs, and multi-image certificate collections with thumbnail strip selectors and individual download links.
+The pathway acts as the transition between the 3D environment and the portfolio information.
+
+It contains the cinematic profile reveal and navigation into the archive.
+
+### Inner Archive
+
+The Inner Archive contains the main portfolio information:
+
+* Projects
+* Technical skills
+* Experience
+* Paper presentations
+* Certifications
+* Achievements
+* Academic credentials
 
 ---
 
-## ⚡ Performance & Engineering Decisions
+# 3D Rendering Architecture
 
-1. **Imperative Three.js Integration:** Built directly on native Three.js rather than abstraction layers, providing direct control over animation frame loops, WebGL draw calls, shader textures, and memory cleanup.
-2. **In-Memory Model Caching:** [`GLBModel.js`](file:///d:/portfolio/src/components/canvas/GLBModel.js) implements an in-memory `Map` cache for loaded GLTF data structures, preventing redundant network requests and CPU decoding spikes when re-entering scenes.
-3. **Hardware-Aware Throttling:** [`useWebGLSupport.js`](file:///d:/portfolio/src/hooks/useWebGLSupport.js) inspects `WEBGL_debug_renderer_info` and hardware concurrency. Low-tier GPUs automatically disable shadow maps, drop antialiasing, clamp device pixel ratios to $1.0$, and reduce particle counts from $650$ to $250$.
-4. **Pointer-Events Isolation:** Canvas overlays utilize `pointer-events: none` with selective raycasting listeners, ensuring full pass-through for underlying DOM UI buttons, inputs, and carousels.
-5. **Base-Aware URL Resolver:** [`assetUrl.js`](file:///d:/portfolio/src/utils/assetUrl.js) provides idempotent resolution against `import.meta.env.BASE_URL`, preventing double-prefixing issues between root-level local development (`/`) and subdirectory GitHub Pages deployments (`/portfolio/`).
+The application uses **native Three.js directly** rather than React Three Fiber.
+
+This provides direct control over:
+
+* WebGL renderer configuration
+* Render loops
+* Cameras
+* Lights
+* Materials
+* Object transforms
+* Raycasting
+* Animation mixers
+* Particle systems
+* Resource cleanup
+
+### Rendering Configuration
+
+The renderer uses:
+
+* ACES Filmic tone mapping
+* sRGB color space
+* PCF soft shadows
+* Perspective camera
+* Dynamic viewport resizing
+* Device-pixel-ratio limits
+
+### Model Loading
+
+3D assets are loaded through:
+
+```text
+GLTFLoader
+    ↓
+DRACOLoader
+    ↓
+Parsed GLTF Scene
+    ↓
+In-Memory Cache
+    ↓
+Three.js Scene
+```
+
+The in-memory cache prevents unnecessary repeated model loading when navigating between scenes.
 
 ---
 
-## 📂 Project Structure
+# Interaction Systems
 
+## Raycasting
+
+Three.js `Raycaster` is used to convert pointer coordinates into interactions with 3D objects.
+
+This powers interactions such as:
+
+* Hover effects
+* Click detection
+* Magic Mirror activation
+* Quidditch object interaction
+
+## Camera Controls
+
+`OrbitControls` provides interactive camera rotation and navigation.
+
+The implementation includes:
+
+* Damping
+* Screen-space panning
+* Distance limits
+* Polar-angle limits
+* Smooth camera transitions
+
+Keyboard navigation is also supported through WASD, Arrow keys and Q/E controls.
+
+---
+
+# Particle & Animation Systems
+
+The application contains custom particle and animation systems rather than relying entirely on third-party animation components.
+
+### Particle Effects
+
+Particle buffers use pre-allocated `Float32Array` structures to manage:
+
+* Position
+* Velocity
+* Lifetime
+* Spark effects
+
+Additive blending is used for magical visual effects.
+
+### 3D Object Animation
+
+Animated objects use Three.js animation systems and procedural transforms for:
+
+* Wing movement
+* Rotation
+* Flight
+* Jitter
+* Banking
+* Particle trails
+
+---
+
+# PDF & Document Rendering
+
+The document viewer uses `pdfjs-dist` to render PDF documents directly into HTML canvas elements.
+
+```text
+PDF
+ ↓
+PDF.js
+ ↓
+PDF Document
+ ↓
+Individual Pages
+ ↓
+Canvas Rendering
+ ↓
+Responsive Viewer
 ```
+
+The viewer includes render-task cancellation so unfinished PDF rendering operations can be stopped when the viewer is closed or the document changes.
+
+High-DPI rendering uses the browser's `devicePixelRatio` while applying limits to prevent excessive GPU memory usage.
+
+---
+
+# Asset Management
+
+Static assets are stored inside the `public/` directory.
+
+```text
+public/
+├── assets/
+│   ├── images/
+│   └── models/
+├── Achivements/
+├── projects/
+├── profile.jpg
+└── resume.pdf
+```
+
+A centralized asset URL utility resolves static paths using Vite's:
+
+```js
+import.meta.env.BASE_URL
+```
+
+This allows the same asset references to work in both:
+
+```text
+Local development
+/
+```
+
+and:
+
+```text
+GitHub Pages
+/portfolio/
+```
+
+This is important because GitHub Pages hosts the project under a repository subpath rather than the domain root.
+
+---
+
+# Performance Engineering
+
+The application includes several performance optimizations.
+
+### Hardware-Aware Rendering
+
+The application checks available browser and hardware information to adjust rendering quality.
+
+Lower-performance devices can use:
+
+* Reduced particle counts
+* Lower device-pixel-ratio limits
+* Disabled expensive shadow rendering
+* Reduced antialiasing cost
+
+### Model Caching
+
+Previously loaded GLTF data is retained in memory to reduce repeated network requests and decoding work.
+
+### Render Optimization
+
+Rendering quality is adapted based on device capabilities while maintaining the core interactive experience.
+
+### Pointer Event Isolation
+
+3D overlay elements use pointer-event isolation so that the WebGL layer does not block normal HTML interactions such as buttons, carousels and controls.
+
+---
+
+# Project Structure
+
+```text
 portfolio/
+│
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml              # GitHub Actions CI/CD workflow
+│       └── deploy.yml
+│
 ├── public/
-│   ├── .nojekyll                   # Bypasses Jekyll on GitHub Pages
-│   ├── resume.pdf                  # Master resume document
+│   ├── .nojekyll
+│   ├── resume.pdf
 │   ├── assets/
-│   │   ├── images/                 # Atmospheric background webp textures
-│   │   └── models/                 # GLB 3D binary assets (DRACO-compressed)
-│   ├── Achivements/                # Verification certificates & publications
-│   └── projects/                   # Project screenshots by category
+│   │   ├── images/
+│   │   └── models/
+│   ├── Achivements/
+│   └── projects/
+│
 ├── src/
 │   ├── components/
-│   │   ├── canvas/                 # Three.js canvases, loaders, flyers, wand cursors
-│   │   ├── scenes/                 # Narrative scene managers (Entrance, Hall, Pathway, Archive)
-│   │   └── ui/                     # UI components, modals, HUD overlays, document viewers
-│   ├── context/                    # React Context providers and stage definitions
-│   ├── data/                       # Portfolio content schemas and model catalogs
-│   ├── hooks/                      # Custom hooks (parallax, scroll stage, WebGL support)
-│   └── utils/                      # Base-aware asset URL resolution utilities
-├── index.html                      # HTML entry template
-├── package.json                    # Project dependencies and script definitions
-└── vite.config.js                  # Vite configuration with base path and nojekyll plugin
+│   │   ├── canvas/
+│   │   ├── scenes/
+│   │   └── ui/
+│   │
+│   ├── context/
+│   ├── data/
+│   ├── hooks/
+│   └── utils/
+│
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+# Getting Started
 
-### Prerequisites
-* **Node.js:** `v20.x` or higher
-* **npm:** `v10.x` or higher
+## Requirements
 
-### Installation & Setup
+* Node.js 20+
+* npm 10+
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Abhi-wizard/portfolio.git
-   cd portfolio
-   ```
+## Installation
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+Clone the repository:
 
-3. **Start the local development server:**
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5173` in your browser.
+```bash
+git clone https://github.com/Abhi-wizard/portfolio.git
+cd portfolio
+```
 
-4. **Execute static code analysis:**
-   ```bash
-   npm run lint
-   ```
+Install dependencies:
 
-5. **Build for production:**
-   ```bash
-   npm run build
-   ```
+```bash
+npm install
+```
 
-6. **Preview production bundle locally:**
-   ```bash
-   npm run preview
-   ```
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+
+```text
+http://localhost:5173
+```
 
 ---
 
-## 🚢 CI/CD & Deployment
+# Available Scripts
 
-The application is deployed to **GitHub Pages** via a dedicated GitHub Actions workflow ([`.github/workflows/deploy.yml`](file:///d:/portfolio/.github/workflows/deploy.yml)):
+### Development
+
+```bash
+npm run dev
+```
+
+Starts the Vite development server with hot module replacement.
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Creates the optimized production bundle in `dist/`.
+
+### Production Preview
+
+```bash
+npm run preview
+```
+
+Serves the production build locally for testing.
+
+### Lint
+
+```bash
+npm run lint
+```
+
+Runs Oxlint against the project source.
+
+---
+
+# Deployment
+
+The application is automatically deployed to GitHub Pages through GitHub Actions.
 
 ```mermaid
 flowchart LR
-    Push[Git Push to main] --> Actions[GitHub Actions]
-    Actions --> Install[npm ci]
-    Install --> Build[npm run build]
-    Build --> Artifact[Upload dist/ Artifact]
-    Artifact --> Deploy[Deploy to GitHub Pages]
+
+    Push[Push to main]
+    Actions[GitHub Actions]
+    Install[npm ci]
+    Build[npm run build]
+    Artifact[Upload dist artifact]
+    Pages[GitHub Pages]
+
+    Push --> Actions
+    Actions --> Install
+    Install --> Build
+    Build --> Artifact
+    Artifact --> Pages
 ```
 
-* **Deployment URL:** `https://abhi-wizard.github.io/portfolio/`
-* **Workflow Configuration:** Runs on `ubuntu-latest` with Node.js 20, uses `actions/configure-pages@v5`, and deploys build artifacts with concurrency locks enabled (`group: pages`, `cancel-in-progress: true`).
+The deployment workflow:
+
+1. Checks out the repository
+2. Installs Node.js dependencies
+3. Runs the production build
+4. Uploads the `dist/` directory as a Pages artifact
+5. Deploys the artifact to GitHub Pages
+
+### Live Application
+
+**[https://abhi-wizard.github.io/portfolio/](https://abhi-wizard.github.io/portfolio/)**
+
+### Repository
+
+**[https://github.com/Abhi-wizard/portfolio](https://github.com/Abhi-wizard/portfolio)**
 
 ---
 
-## 📄 License
+# Important Deployment Configuration
 
-This project is open-source and available under the standard repository terms.
+Because the application is deployed as a GitHub Pages project site, Vite uses:
+
+```js
+export default defineConfig({
+  plugins: [react()],
+  base: '/portfolio/',
+})
+```
+
+Static assets are resolved through `import.meta.env.BASE_URL` to ensure paths work correctly after deployment.
+
+---
+
+# Engineering Decisions
+
+### Native Three.js
+
+Native Three.js was selected instead of a higher-level React 3D abstraction to maintain direct control over the WebGL rendering pipeline and interactive 3D systems.
+
+### Centralized Asset Resolution
+
+A shared asset resolver prevents hard-coded root-relative paths from breaking when the application is deployed under `/portfolio/`.
+
+### In-Memory GLTF Cache
+
+Caching avoids repeated model downloads and decoding when scenes are revisited.
+
+### Client-Side PDF Rendering
+
+PDF.js allows documents to be displayed inside the application without relying on a separate browser tab or external PDF viewer.
+
+### Responsive Rendering
+
+The application dynamically adapts rendering quality based on device capabilities to maintain usability across desktop and lower-powered devices.
+
+---
+
+# Technical Considerations
+
+The portfolio contains several relatively large 3D assets. Model size and WebGL performance can therefore affect initial loading time and device performance.
+
+Current large assets include:
+
+* Nimbus 2000 — approximately 74 MB
+* Enchanted Grimoire — approximately 30 MB
+* Gothic Wall Torch — approximately 23 MB
+* Elder Wand — approximately 21 MB
+
+Future optimization opportunities include:
+
+* Additional GLB compression
+* Texture optimization
+* Progressive asset loading
+* Lazy-loading scene-specific models
+* Further mobile GPU optimization
+* CDN-based asset delivery
+
+---
+
+# License & Assets
+
+The application source code and third-party 3D assets may have different licensing requirements.
+
+Before redistributing or commercially using individual 3D models, textures, fonts, or other third-party assets, their respective licenses and usage permissions should be verified.
+
+---
+
+## Built With
+
+**React · Vite · Three.js · GLTFLoader · DRACOLoader · Framer Motion · PDF.js · Vanilla CSS · GitHub Actions · GitHub Pages**
