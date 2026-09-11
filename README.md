@@ -4,7 +4,7 @@ An interactive 3D portfolio web application built with **React 19**, **Vite**, a
 
 ---
 
-## ✨ Features
+##  Features
 
 * **Native Three.js WebGL Environment:** Full-fidelity 3D rendering using Three.js with ACES Filmic tone mapping, SRGB color space correction, exponential fog, and PCF soft shadow maps.
 * **GLTF / GLB 3D Pipeline:** Asynchronous loading of `.glb` models with Google DRACO mesh compression and in-memory caching to eliminate redundant network fetches.
@@ -21,7 +21,7 @@ An interactive 3D portfolio web application built with **React 19**, **Vite**, a
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 | Layer / Subsystem | Technology | Version | Purpose |
 | :--- | :--- | :--- | :--- |
@@ -38,7 +38,7 @@ An interactive 3D portfolio web application built with **React 19**, **Vite**, a
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 The application is structured into decoupled UI, 3D Canvas, and State Management layers:
 
@@ -92,7 +92,7 @@ flowchart TD
 
 ---
 
-## 🎮 3D Graphics & Rendering Pipeline
+##  3D Graphics & Rendering Pipeline
 
 The 3D implementation directly interfaces with Three.js WebGL rendering contexts through React `useRef` mounts:
 
@@ -112,7 +112,7 @@ The 3D implementation directly interfaces with Three.js WebGL rendering contexts
 
 ---
 
-## 📜 Document & PDF Viewer Engine
+##  Document & PDF Viewer Engine
 
 The application features a universal, client-side document rasterization engine in [`ResumeOverlay.jsx`](file:///d:/portfolio/src/components/ui/ResumeOverlay.jsx) that enables visitors on **all devices (Mobile, Tablet, and Desktop)** to view multi-page PDFs directly inside the same-tab parchment modal:
 
@@ -138,7 +138,7 @@ PDF Document URL ──► pdfjsLib.getDocument() ──► PDFDocumentProxy
 
 ---
 
-## ⚡ Performance & Engineering Decisions
+##  Performance & Engineering Decisions
 
 1. **Imperative Three.js Integration:** Built directly on native Three.js rather than abstraction layers, providing direct control over animation frame loops, WebGL draw calls, shader textures, and memory cleanup.
 2. **In-Memory Model Caching:** [`GLBModel.js`](file:///d:/portfolio/src/components/canvas/GLBModel.js) implements an in-memory `Map` cache for loaded GLTF data structures, preventing redundant network requests and CPU decoding spikes when re-entering scenes.
@@ -148,7 +148,7 @@ PDF Document URL ──► pdfjsLib.getDocument() ──► PDFDocumentProxy
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 portfolio/
@@ -179,7 +179,7 @@ portfolio/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 * **Node.js:** `v20.x` or higher
@@ -221,7 +221,7 @@ portfolio/
 
 ---
 
-## 🚢 CI/CD & Deployment
+## CI/CD & Deployment
 
 The application is deployed to **GitHub Pages** via a dedicated GitHub Actions workflow ([`.github/workflows/deploy.yml`](file:///d:/portfolio/.github/workflows/deploy.yml)):
 
@@ -239,6 +239,6 @@ flowchart LR
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source and available under the standard repository terms.
