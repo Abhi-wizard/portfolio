@@ -6,7 +6,11 @@ The application combines real-time WebGL scenes, interactive 3D models, cinemati
 
 ---
 
+<<<<<<< HEAD
 ## Overview
+=======
+##  Features
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 This project is designed as an interactive 3D portfolio rather than a conventional static portfolio website.
 
@@ -28,7 +32,11 @@ The 3D environment and interface are controlled through React state while Three.
 
 ---
 
+<<<<<<< HEAD
 ## Key Features
+=======
+##  Tech Stack
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 ### 3D WebGL Environment
 
@@ -127,7 +135,11 @@ The viewer supports:
 
 ---
 
+<<<<<<< HEAD
 # Technology Stack
+=======
+##  Architecture
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 | Layer         | Technology        | Purpose                                           |
 | ------------- | ----------------- | ------------------------------------------------- |
@@ -183,7 +195,11 @@ flowchart TD
 
 ---
 
+<<<<<<< HEAD
 # Scene System
+=======
+##  3D Graphics & Rendering Pipeline
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 The application uses a state-driven scene system.
 
@@ -223,7 +239,11 @@ The Inner Archive contains the main portfolio information:
 
 ---
 
+<<<<<<< HEAD
 # 3D Rendering Architecture
+=======
+##  Document & PDF Viewer Engine
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 The application uses **native Three.js directly** rather than React Three Fiber.
 
@@ -271,7 +291,11 @@ The in-memory cache prevents unnecessary repeated model loading when navigating 
 
 ---
 
+<<<<<<< HEAD
 # Interaction Systems
+=======
+##  Performance & Engineering Decisions
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 ## Raycasting
 
@@ -300,7 +324,11 @@ Keyboard navigation is also supported through WASD, Arrow keys and Q/E controls.
 
 ---
 
+<<<<<<< HEAD
 # Particle & Animation Systems
+=======
+##  Project Structure
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 The application contains custom particle and animation systems rather than relying entirely on third-party animation components.
 
@@ -457,7 +485,11 @@ portfolio/
 
 ---
 
+<<<<<<< HEAD
 # Getting Started
+=======
+##  Getting Started
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 ## Requirements
 
@@ -493,7 +525,11 @@ http://localhost:5173
 
 ---
 
+<<<<<<< HEAD
 # Available Scripts
+=======
+## CI/CD & Deployment
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 ### Development
 
@@ -568,7 +604,11 @@ The deployment workflow:
 
 ---
 
+<<<<<<< HEAD
 # Important Deployment Configuration
+=======
+## License
+>>>>>>> eaa26263fb23a6def2a27ab3320d6d38a0845adc
 
 Because the application is deployed as a GitHub Pages project site, Vite uses:
 
